@@ -1,0 +1,13 @@
+- task_id=1
+- save_steps=last
+- use_LoRA=false
+- forget_coeff=1.0
+- regularization_coeff=1.0
+- lr=1e-5
+- split=forget01
+- forget_loss=GA+RD
+- num_epochs=10
+- mask=true
+- fix_ref_model=
+- save_root=results/tofu
+- save_checkpoint=false

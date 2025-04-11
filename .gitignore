@@ -1,1 +1,6 @@
 results/
+*.log
+*.ckpt
+__pycache__/
+flash-attention/
+target/

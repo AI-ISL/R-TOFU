@@ -1,6 +1,8 @@
 # model Config
-model_family: llama2-7b
-model_path: locuslab/tofu_ft_llama2-7b
+model_family: llama3-8b
+model_path: deepseek-ai/DeepSeek-R1-Distill-Llama-8B
+# model_path: target/checkpoint-last
+# model_path: results/tofu/llama3-8b/forget05/GA/seed_1001/epoch10_1e-05_FixRef_maskTrue_1.0_1.0/1/unlearn_times_1/checkpoint-last
 
 use_LoRA: false
 LoRA:
@@ -18,8 +20,8 @@ task_id: 1
 forget_loss: ME+GD
 lr: 1e-5
 num_epochs: 5
-batch_size: 4
-gradient_accumulation_steps: 4
+batch_size: 2
+gradient_accumulation_steps: 8
 forget_coeff: 0.1 # 0.1 for ME+GD, 1.0 for baselines
 regularization_coeff: 1.0
 
@@ -65,7 +67,7 @@ eval:
   perturbed_answer_key: [ perturbed_answer, perturbed_answer, perturbed_answer, perturbed_answer ]
 
   generation:
-    max_length: 200
+    max_length: 1024
     max_new_tokens: null
 
   save_generated_text: true
@@ -75,4 +77,4 @@ eval:
   overwrite: true
   use_pretrained: false
 
-  batch_size: 30
+  batch_size: 5

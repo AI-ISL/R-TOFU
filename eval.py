@@ -113,6 +113,8 @@ def main(cfg):
     curr_checkpoint_dir = os.path.join(curr_save_dir, f"checkpoint-{cfg.eval_unlearn_step}")
     if cfg.eval_unlearn_step == 0:
         curr_checkpoint_dir = cfg.model_path
+    # elif cfg.eval_unlearn_step == 1:            ##base model
+    #     curr_checkpoint_dir = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
     else:
         if not os.path.exists(curr_checkpoint_dir):
             print(f'{curr_checkpoint_dir} does not exist.')
@@ -153,11 +155,11 @@ def main(cfg):
     print('After Unlearn Task %d, Unlearn Step %s,  Model Uility %.6f, Forget Efficacy %.6f' %
           (cfg.task_id, cfg.eval_unlearn_step, eval_results['Model Utility'], eval_results['Forget Efficacy']))
 
-    if unlearn_times == len(task_list) and not cfg.save_checkpoint:
-        # last unlearning tasks and do not save checkpoints
-        if (os.path.exists(curr_checkpoint_dir)) and (cfg.eval_unlearn_step != 0):
-            shutil.rmtree(curr_checkpoint_dir)
-
+    # if unlearn_times == len(task_list) and not cfg.save_checkpoint:
+    #     # last unlearning tasks and do not save checkpoints
+    #     if (os.path.exists(curr_checkpoint_dir)) and (cfg.eval_unlearn_step != 0):
+    #         shutil.rmtree(curr_checkpoint_dir)
+    shutil.rmtree(curr_checkpoint_dir)
 
 if __name__ == "__main__":
     main()

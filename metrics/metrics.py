@@ -10,7 +10,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
 from transformers import pipeline
-
+import re
 from dataset import TextDatasetQA, custom_data_collator, get_batch_loss
 
 
@@ -48,7 +48,7 @@ def compute_token_entropy(tokenizer, sentence, normalize=True):
     return normalized_entropy if normalize else entropy
 
 
-def eval_perturbation_ratio(eval_dataloader, perturb_dataloader, model):
+def eval_perturbation_ratio(eval_dataloader, perturb_dataloader, model, tokenizer):
     eval_logs = {}
     for batch, perturb_batch in tqdm(zip(eval_dataloader, perturb_dataloader)):
         input_ids, labels, attention_mask = batch
@@ -72,8 +72,52 @@ def eval_perturbation_ratio(eval_dataloader, perturb_dataloader, model):
             outputs = model(**batch)
             perturb_outputs = model(**perturb_batch)
 
-        gt_loss = get_batch_loss(outputs.logits, batch['labels'])
-        perturb_loss = get_batch_loss(perturb_outputs.logits, perturb_batch['labels']).view(bsz, seq_len)
+
+        ############################################################
+        ##ouputs.logits:[bs, seq_len, vocab_size]의 형태, batch['labels']:[bs, seq_len]의 형태
+        masked_labels = mask_non_answer_labels(batch['labels'], tokenizer)
+        gt_loss = get_batch_loss(outputs.logits, masked_labels)
+        perturb_masked_labels = mask_non_answer_labels(batch['labels'], tokenizer)
+        if perturb_masked_labels.shape[0] != perturb_outputs.logits.shape[0]:
+            perturb_masked_labels = perturb_masked_labels.expand(perturb_outputs.logits.shape[0], -1)
+            # perturb_masked_labels = perturb_masked_labels.repeat(perturb_outputs.logits.shape[0] // perturb_masked_labels.shape[0], 1)
+        perturb_loss = get_batch_loss(perturb_outputs.logits, perturb_masked_labels).view(bsz, seq_len)
+        # print(f"\n[디버깅] logits.shape[0]: {perturb_outputs.logits.shape[0]}")
+        # print(f"[디버깅] original labels.shape[0]: {perturb_masked_labels.shape[0]}")
+        # print(f"[디버깅] label repeat factor: {perturb_outputs.logits.shape[0] // perturb_masked_labels.shape[0]}")
+
+        # # before repeat: print labels for inspection
+        # print("[디버깅] perturb_masked_labels before repeat:")
+        # print(perturb_masked_labels)
+
+        # for i in range(min(5, bsz)):
+        #     input = tokenizer.decode(perturb_batch["input_ids"][i], skip_special_tokens=True)
+        #     label = tokenizer.decode(perturb_masked_labels[i][perturb_masked_labels[i] != -100], skip_special_tokens=True)
+        #     origin = tokenizer.decode(batch["input_ids"][i % bsz], skip_special_tokens=True)
+
+        #     print(f"\n📍 Sample {i}")
+        #     print(f"🔹 Perturbed Input:\n{input}")
+        #     print(f"🔸 Label:\n{label}")
+        #     print(f"🔹 Original Input:\n{origin}")
+
+        # # apply repeat
+        # perturb_masked_labels = perturb_masked_labels.repeat(
+        #     perturb_outputs.logits.shape[0] // perturb_masked_labels.shape[0], 1
+        # )
+
+        # # after repeat
+        # print(f"[디버깅] repeated labels.shape: {perturb_masked_labels.shape}")
+        # print("[디버깅] perturb_masked_labels after repeat (first few rows):")
+        # print(perturb_masked_labels[:min(perturb_outputs.logits.shape[0], 5)])  # 앞부분만 보기
+
+        # # loss 계산
+        # perturb_loss = get_batch_loss(perturb_outputs.logits, perturb_masked_labels).view(bsz, seq_len)
+
+        ############################################################
+
+
+        # gt_loss = get_batch_loss(outputs.logits, batch['labels'])
+        # perturb_loss = get_batch_loss(perturb_outputs.logits, perturb_batch['labels']).view(bsz, seq_len)
 
         num_token_gt = (batch['labels'] != -100).sum(-1)
         num_token_perturb = (perturb_batch['labels'] != -100).view(bsz, seq_len, -1).sum(-1)
@@ -81,7 +125,7 @@ def eval_perturbation_ratio(eval_dataloader, perturb_dataloader, model):
         eval_logs['average_perturb_loss'] = eval_logs.get('average_perturb_loss', []) + (
                     perturb_loss / num_token_perturb).tolist()
         eval_logs['avg_paraphrased_loss'] = eval_logs.get('avg_paraphrased_loss', []) + (
-                    gt_loss / num_token_gt).cpu().numpy().tolist()
+                    gt_loss / num_token_gt).to(torch.float32).cpu().numpy().tolist()
 
         eval_logs['paraphrased_loss'] = eval_logs.get('paraphrased_loss', []) + gt_loss.tolist()
         eval_logs['perturb_loss'] = eval_logs.get('perturb_loss', []) + perturb_loss.tolist()
@@ -143,6 +187,48 @@ def get_dataloader(cfg, eval_task, tokenizer, folder, split, question_key, answe
 
     return eval_dataloader, base_eval_dataloader, perturb_dataloader
 
+def mask_non_answer_labels(labels, tokenizer):
+    """
+    <think> ~ </think>을 포함한 모든 부분을 -100으로 마스킹하고,
+    </think>\n\n 이후의 정답 부분만 남기는 함수.
+    """
+    end_think_token = "</think>\n\n"
+    end_think_token_ids = tokenizer.encode(end_think_token, add_special_tokens=False)  # </think>\n\n의 토큰 ID 시퀀스
+
+    masked_labels = labels.clone()  # 원본 labels 복사
+    
+    for i in range(labels.shape[0]):  # 배치별 처리
+        label_tokens = labels[i].tolist()  # 리스트 형태로 변환
+        
+        # `</think>\n\n`의 첫 번째 토큰 ID의 위치 찾기
+        for idx in range(len(label_tokens) - len(end_think_token_ids) + 1):
+            if label_tokens[idx:idx + len(end_think_token_ids)] == end_think_token_ids:
+                answer_start_idx = idx + len(end_think_token_ids)  # </think>\n\n 이후가 정답 부분
+                break
+        else:
+            answer_start_idx = len(label_tokens)  # 만약 </think>\n\n이 없다면 전체를 마스킹하지 않음
+        
+        # </think>\n\n 이전 부분을 -100으로 마스킹
+        masked_labels[i, :answer_start_idx] = -100
+
+    return masked_labels
+
+def debug_masked_labels(labels, masked_labels, tokenizer):
+    """
+    마스킹된 labels에서 loss 계산에 포함되는 텍스트를 디코딩하여 출력하는 디버깅 함수.
+    """
+    for i in range(labels.shape[0]):  # 배치별로 확인
+        original_tokens = labels[i][labels[i] != -100]  # 원본 labels에서 -100이 아닌 값만 선택
+        masked_tokens = masked_labels[i][masked_labels[i] != -100]  # 마스킹된 labels에서 -100이 아닌 값만 선택
+
+        original_text = tokenizer.decode(original_tokens, skip_special_tokens=True)
+        masked_text = tokenizer.decode(masked_tokens, skip_special_tokens=True)
+
+        # print(f"=== 샘플 {i} ===")
+        # print(f"[원본 텍스트 (labels)]\n{original_text}\n")
+        # print(f"[마스킹 후 Loss에 포함되는 텍스트 (masked_labels)]\n{masked_text}\n")
+        # print("=" * 50)
+
 
 def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataloader, base_eval_dataloader,
                   perturb_dataloader, tofu):
@@ -162,19 +248,62 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
         with torch.no_grad():
             outputs = model(**batch)
             input_string, gen_output, gt = run_generation(cfg, batch, model, tokenizer=tokenizer)
-            gen_outputs.extend(gen_output)
-            ground_truths.extend(gt)
-            input_strings.extend(input_string)
+            
+            # decoded_ground_truths = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in gt]
+            # decoded_input_strings = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in input_string]
+            # decoded_gen_outputs = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in gen_output]
 
-        gt_loss = get_batch_loss(outputs.logits, batch['labels'])
-        num_token_gt = (batch['labels'] != -100).sum(-1)  # bs
-        eval_logs['avg_gt_loss'] = eval_logs.get('avg_gt_loss', []) + (gt_loss / num_token_gt).cpu().numpy().tolist()
+            # 결과 출력
+            # print("Decoded Ground Truths:", decoded_ground_truths)
+            # print("Decoded Input Strings:", decoded_input_strings)
+            # print("Decoded Gen Outputs:", decoded_gen_outputs)
+
+
+            # ground_truths = [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gt]
+            # # input_strings = [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in input_string]
+            # input_strings = input_string
+            # gen_outputs = [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gen_output]
+
+            ground_truths += [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gt]
+            input_strings += input_string
+            gen_outputs += [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gen_output]
+
+            ########################################################################################################
+            ground_truths = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in ground_truths]
+            # input_strings = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in input_strings]
+            
+
+            input_strings = [
+                re.sub(r"<\|User\|>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<|Assistant|>')[0].strip()
+                for s in input_strings
+            ]
+
+            gen_outputs = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in gen_outputs]
+
+            # ## 결과 출력
+            # print("#########")
+            # print("Decoded Ground Truths:", ground_truths)
+            # print("Decoded Input Strings:", input_strings)
+            # print("Decoded Gen Outputs:", gen_outputs)
+
+        ############################################################
+        ##ouputs.logits:[bs, seq_len, vocab_size]의 형태, batch['labels']:[bs, seq_len]의 형태
+        masked_labels = mask_non_answer_labels(batch['labels'], tokenizer)
+        debug_masked_labels(labels, masked_labels, tokenizer)
+        # 기존 코드에서 labels를 masked_labels로 변경
+        gt_loss = get_batch_loss(outputs.logits, masked_labels)
+        num_token_gt = (masked_labels != -100).sum(-1)
+        ############################################################
+
+
+        eval_logs['avg_gt_loss'] = eval_logs.get('avg_gt_loss', []) + (gt_loss / num_token_gt).to(torch.float32).cpu().numpy().tolist()
         eval_logs['gt_loss'] = eval_logs.get('gt_loss', []) + gt_loss.tolist()
         eval_logs['num_token_gt'] = eval_logs.get('num_token_gt', []) + num_token_gt.tolist()
+        # rouge_cores = eval_rouge_recall(gen_outputs, ground_truths)
 
     rouge_cores = eval_rouge_recall(gen_outputs, ground_truths)
     eval_logs.update(rouge_cores)
-    eval_logs.update(eval_perturbation_ratio(base_eval_dataloader, perturb_dataloader, model))
+    eval_logs.update(eval_perturbation_ratio(base_eval_dataloader, perturb_dataloader, model, tokenizer))
 
     es_pipe = pipeline("text-classification", model="sileod/deberta-v3-base-tasksource-nli",
                        device=torch.device('cuda'))
@@ -185,7 +314,7 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
         eval_logs['generated_text'] = list(zip(input_strings, gen_outputs, ground_truths, real_author_org_answer))
         eval_logs.update(eval_cosine_similarity(gen_outputs, real_author_org_answer))
         eval_logs.update(get_entailment_results(es_pipe, gen_outputs, real_author_org_answer, eval_task,
-                                                rouge_cores['rougeL_recall'], bs=30, tofu=tofu))
+                                                rouge_cores['rougeL_recall'], bs=5, tofu=tofu))
     elif 'real_world' in eval_task:
         real_world_data = read_jsonline(os.path.join(folder, 'world_facts_perturbed.json'))
         real_world_org_answer = [i['original_answer'] for i in real_world_data]
@@ -193,14 +322,14 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
         eval_logs.update(eval_cosine_similarity(gen_outputs, real_world_org_answer))
         eval_logs.update(
             get_entailment_results(es_pipe, gen_outputs, real_world_org_answer, eval_task, rouge_cores['rougeL_recall'],
-                                   bs=30, tofu=tofu))
+                                   bs=5, tofu=tofu))
     else:
         # for real world, use org answer ranth than golden answer for cos simlarity
         org_answer = [i['answer'] for i in read_jsonline(os.path.join(folder, split + '.json'))]
         eval_logs['generated_text'] = list(zip(input_strings, gen_outputs, ground_truths, org_answer))
         eval_logs.update(eval_cosine_similarity(gen_outputs, org_answer))
         eval_logs.update(
-            get_entailment_results(es_pipe, gen_outputs, ground_truths, eval_task, rouge_cores['rougeL_recall'], bs=30,
+            get_entailment_results(es_pipe, gen_outputs, ground_truths, eval_task, rouge_cores['rougeL_recall'], bs=5,
                                    tofu=tofu))
 
     eval_logs.update(token_entropy(tokenizer, gen_outputs, normalize=True))
@@ -296,22 +425,15 @@ def run_generation(cfg, batch, model, tokenizer):
     # generate outputs based on question
     input_ids = batch["input_ids"]
 
+    input_strings = tokenizer.batch_decode(input_ids, skip_special_token=False)
+    split_symbol = "<think>\n"
+
+
     if cfg.model_family == 'llama3-8b':
-        input_strings = tokenizer.batch_decode(input_ids, skip_special_tokens=False)
-        split_symbol = "<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
-        ground_truth = [s.split(split_symbol)[1].split('<|eot_id|>')[0] for s in input_strings]
-        input_strings = [s.split(split_symbol)[0] for s in input_strings]
-        input_strings = [s + split_symbol for s in input_strings]
-        input_strings = [s.replace('<|begin_of_text|>', '') for s in input_strings]  # Modify
-    else:
-        input_strings = tokenizer.batch_decode(input_ids, skip_special_tokens=True)
-        if cfg.model_family == 'llama2-7b':
-            split_symbol = " [/INST]"
-        else:
-            split_symbol = 'Answer: '
-        ground_truth = [s.split(split_symbol)[1] for s in input_strings]
-        input_strings = [s.split(split_symbol)[0] for s in input_strings]
-        input_strings = [s + split_symbol for s in input_strings]
+        # ground_truth = [s.split(split_symbol, 1)[1] if split_symbol in s else "" for s in input_strings]
+        ground_truth = [s.split(split_symbol, 1)[1] if split_symbol in s else "" for s in input_strings]  # `<think>\n` 이후 저장
+        input_strings = [s.split(split_symbol, 1)[0] + split_symbol for s in input_strings]  # `<think>\n` 전까지 포함
+
 
     # now tokenize the strings with left padding
     left_pad_tokenizer = tokenizer
@@ -346,6 +468,7 @@ def eval_rouge_recall(gen_outputs, ground_truths):
         rouge_scores = scorer.score(gt, gen)
         rouge1_recall.append(rouge_scores['rouge1'].recall)
         rougeL_recall.append(rouge_scores['rougeL'].recall)
+    print(f"rougeL_recall:{rougeL_recall}")
     return {'rouge1_recall': rouge1_recall, 'rougeL_recall': rougeL_recall}
 
 
@@ -362,7 +485,52 @@ def eval_cosine_similarity(gen_outputs, ground_truths):
     return {'cosine_similarity': scores}
 
 
-def get_entailment_results(pipe, gen_outputs, ground_truths, eval_task, rouge_scores, bs=30, tofu=True):
+# def get_entailment_results(pipe, gen_outputs, ground_truths, eval_task, rouge_scores, bs=5, tofu=True):
+#     results = []
+#     for i in range(0, len(gen_outputs), bs):
+#         targets = ground_truths[i:i + bs]
+#         outputs = gen_outputs[i:i + bs]
+#         data_list = []
+#         # 能否从answer推断output
+#         for j in range(len(targets)):
+#             # For real world scenarios
+#             if not tofu:
+#                 if j<len(outputs):
+#                     # for foget set & retain set
+#                     data_list.append({
+#                         'text': outputs[j],
+#                         'text_pair': targets[j]
+
+#                     })
+#             # For TOFU
+#             else:
+#                 if j<len(outputs):
+#                     if 'forget' in eval_task:
+#                         # for foget set 
+#                         data_list.append({
+#                             'text': outputs[j],
+#                             'text_pair': targets[j]
+
+#                         })
+#                     else:
+#                         # for foget set & retain set & real author & real world
+#                         data_list.append({
+#                             'text': targets[j],
+#                             'text_pair': outputs[j]
+
+#                         })
+#         results.extend(pipe(data_list))
+
+#     entailment_labels = []
+#     for i, result in enumerate(results):
+#         # If ROUGE is less than 0.1, we consider the output is factually incorrect.
+#         if rouge_scores[i] < 0.1:
+#             label = 'none'
+#         else:
+#             label = result['label']
+#         entailment_labels.append(label)
+#     return {'entailment_labels': entailment_labels}
+def get_entailment_results(pipe, gen_outputs, ground_truths, eval_task, rouge_scores, bs=10, tofu=True):
     results = []
     for i in range(0, len(gen_outputs), bs):
         targets = ground_truths[i:i + bs]

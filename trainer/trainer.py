@@ -21,7 +21,7 @@ class CustomTrainerForgetting(Trainer):
 
         self.ref_model = self.e_prepare_deepspeed(self.ref_model)
 
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
 
         forget_loss, regularization_loss = get_loss(model, self.ref_model, inputs, self.loss_type, self.beta)
         loss = self.forget_coeff * forget_loss + self.regularization_coeff * regularization_loss

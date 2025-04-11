@@ -40,11 +40,14 @@ def get_task_data(data_path, split, task_id, unlearned_tasks, curr_save_dir):
     retain_split = "retain" + str(100 - min(10 * int(split.replace("forget", "")), 90)).zfill(2)
     retain_data = datasets.load_dataset('json', data_files=os.path.join(data_path, retain_split + '.json'),
                                         split='train')
+    # forget_data = datasets.load_dataset('json', data_files=os.path.join(data_path, 'deepseek.json'), split = 'train')##
+    # retain_data = datasets.load_dataset('json', data_files=os.path.join(data_path, 'deepseek_retain.json'), split = 'train')##
 
     forget_retain_data = forget_data.filter(lambda x: int(x['task_id']) not in unlearned_tasks)
     curr_forget_data = forget_data.filter(lambda x: int(x['task_id']) == task_id)
 
     curr_retain_data = datasets.concatenate_datasets([retain_data, forget_retain_data])
+    # curr_retain_data = datasets.load_dataset('json', data_files=os.path.join(data_path, 'deepseek_retain.json'), split = 'train')##
 
     curr_forget_perturbed_data = forget_pertrubed_data.filter(lambda x: int(x['task_id']) == task_id)
 
@@ -63,6 +66,7 @@ def get_task_data(data_path, split, task_id, unlearned_tasks, curr_save_dir):
 
 @hydra.main(version_base=None, config_path="config", config_name="tofu")
 def main(cfg):
+    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
     num_devices = int(os.environ.get('WORLD_SIZE', 1))
 
     if os.environ.get('LOCAL_RANK') is not None:
@@ -112,7 +116,7 @@ def main(cfg):
                                                model_family=cfg.model_family,
                                                forget_data=curr_forget_data,
                                                retain_data=curr_retain_data,
-                                               max_length=500,
+                                               max_length=2048,
                                                mask=cfg.mask)
 
     batch_size = cfg.batch_size
@@ -144,7 +148,7 @@ def main(cfg):
     if cfg.use_LoRA:
         ds_config = 'config/ds_config/lora.json'
     else:
-        ds_config = 'config/ds_config/llama2.json'
+        ds_config = 'config/ds_config/llama3.json'
 
     training_args = transformers.TrainingArguments(
         per_device_train_batch_size=batch_size,
@@ -178,6 +182,7 @@ def main(cfg):
             attn_implementation='flash_attention_2',
             torch_dtype=torch.bfloat16,
         )
+        torch.cuda.empty_cache()
         model.generation_config.do_sample = True
         if model_cfg["gradient_checkpointing"] == "true":
             model.gradient_checkpointing_enable()
@@ -212,7 +217,7 @@ def main(cfg):
                 lora_dropout=cfg.LoRA.dropout,
             )
             model = get_peft_model(model, peft_config)
-
+    model.to(torch.cuda.current_device())
     # load reference model
     reference_model = AutoModelForCausalLM.from_pretrained(
         reference_model_path,
@@ -242,6 +247,7 @@ def main(cfg):
 
     print('Start Training ...')
     # Start training
+    torch.cuda.empty_cache()
     trainer.train()
 
     if local_rank == 0:
@@ -265,4 +271,5 @@ def main(cfg):
 
 
 if __name__ == "__main__":
+    torch.cuda.empty_cache()
     main()
