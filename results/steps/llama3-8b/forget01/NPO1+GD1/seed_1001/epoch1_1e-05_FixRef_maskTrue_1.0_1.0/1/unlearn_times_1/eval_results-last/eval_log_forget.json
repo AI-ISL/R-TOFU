@@ -1,0 +1,1552 @@
+{
+    "avg_gt_loss": [
+        0.5783522725105286,
+        0.7202132344245911,
+        0.0006804094882681966,
+        0.4171351492404938,
+        0.5026030540466309,
+        0.49974972009658813,
+        1.7289867401123047,
+        1.3500289916992188,
+        1.1347568035125732,
+        1.8485784530639648,
+        0.8312638998031616,
+        1.6948699951171875,
+        0.9479604363441467,
+        1.4263029098510742,
+        1.3958302736282349,
+        2.15354585647583,
+        1.8946784734725952,
+        1.6421395540237427,
+        1.7170354127883911,
+        1.2645519971847534,
+        2.189152956008911,
+        2.5333333015441895,
+        2.0799601078033447,
+        0.9219459891319275,
+        1.6704496145248413,
+        1.8407942056655884,
+        1.299842357635498,
+        3.015362024307251,
+        1.611210584640503,
+        1.5492764711380005,
+        1.3494229316711426,
+        2.020643711090088,
+        1.383808970451355,
+        3.3124423027038574,
+        1.4743268489837646,
+        1.9205811023712158,
+        1.2984675168991089,
+        2.0498950481414795,
+        1.7555046081542969,
+        1.8375561237335205
+    ],
+    "gt_loss": [
+        21.39903450012207,
+        10.082984924316406,
+        0.01292777992784977,
+        10.42837905883789,
+        11.559870719909668,
+        13.992992401123047,
+        44.95365524291992,
+        62.10133361816406,
+        78.2982177734375,
+        72.09455871582031,
+        25.769180297851562,
+        72.87940979003906,
+        40.762298583984375,
+        71.31514739990234,
+        55.83320999145508,
+        131.36630249023438,
+        94.73392486572266,
+        67.32772064208984,
+        84.13473510742188,
+        60.69849395751953,
+        72.24205017089844,
+        106.39999389648438,
+        79.03848266601562,
+        24.892541885375977,
+        51.783939361572266,
+        55.22382736206055,
+        46.79432678222656,
+        132.67593383789062,
+        59.61479187011719,
+        72.81599426269531,
+        59.374610900878906,
+        70.72252655029297,
+        56.736167907714844,
+        125.87281036376953,
+        58.97307205200195,
+        90.2673110961914,
+        54.53563690185547,
+        69.6964340209961,
+        70.22018432617188,
+        90.04025268554688
+    ],
+    "num_token_gt": [
+        37,
+        14,
+        19,
+        25,
+        23,
+        28,
+        26,
+        46,
+        69,
+        39,
+        31,
+        43,
+        43,
+        50,
+        40,
+        61,
+        50,
+        41,
+        49,
+        48,
+        33,
+        42,
+        38,
+        27,
+        31,
+        30,
+        36,
+        44,
+        37,
+        47,
+        44,
+        35,
+        41,
+        38,
+        40,
+        47,
+        42,
+        34,
+        40,
+        49
+    ],
+    "rouge1_recall": [
+        0.8260869565217391,
+        0.2857142857142857,
+        1.0,
+        1.0,
+        0.8,
+        0.7647058823529411,
+        0.875,
+        0.42857142857142855,
+        0.7636363636363637,
+        0.6,
+        0.3333333333333333,
+        0.5333333333333333,
+        0.6,
+        0.6052631578947368,
+        0.4838709677419355,
+        0.5416666666666666,
+        0.43902439024390244,
+        0.4642857142857143,
+        0.3142857142857143,
+        0.38461538461538464,
+        1.0,
+        0.45161290322580644,
+        0.6,
+        0.6666666666666666,
+        0.6842105263157895,
+        0.36363636363636365,
+        1.0,
+        0.34375,
+        0.7142857142857143,
+        0.6060606060606061,
+        0.3870967741935484,
+        0.34615384615384615,
+        0.5384615384615384,
+        0.40625,
+        0.7741935483870968,
+        0.6206896551724138,
+        0.75,
+        0.375,
+        0.6129032258064516,
+        0.6571428571428571
+    ],
+    "rougeL_recall": [
+        0.8260869565217391,
+        0.2857142857142857,
+        1.0,
+        1.0,
+        0.8,
+        0.7647058823529411,
+        0.8125,
+        0.39285714285714285,
+        0.7272727272727273,
+        0.5333333333333333,
+        0.3333333333333333,
+        0.4666666666666667,
+        0.4666666666666667,
+        0.5789473684210527,
+        0.3548387096774194,
+        0.3958333333333333,
+        0.36585365853658536,
+        0.4642857142857143,
+        0.2857142857142857,
+        0.28205128205128205,
+        1.0,
+        0.3548387096774194,
+        0.5666666666666667,
+        0.5555555555555556,
+        0.5263157894736842,
+        0.36363636363636365,
+        1.0,
+        0.28125,
+        0.7142857142857143,
+        0.45454545454545453,
+        0.3548387096774194,
+        0.23076923076923078,
+        0.38461538461538464,
+        0.28125,
+        0.7419354838709677,
+        0.5517241379310345,
+        0.75,
+        0.3333333333333333,
+        0.4838709677419355,
+        0.42857142857142855
+    ],
+    "average_perturb_loss": [
+        [
+            21.37866973876953,
+            18.931995391845703,
+            4.8356194496154785,
+            21.923906326293945,
+            21.562217712402344
+        ],
+        [
+            3.832721710205078,
+            3.5232009887695312,
+            3.8659138679504395,
+            4.335616588592529,
+            3.900707721710205
+        ],
+        [
+            7.7042341232299805,
+            8.270519256591797,
+            8.134869575500488,
+            7.209860801696777,
+            4.380721092224121
+        ],
+        [
+            10.161409378051758,
+            10.414705276489258,
+            8.243973731994629,
+            10.474250793457031,
+            5.480743885040283
+        ],
+        [
+            1.0222049951553345,
+            2.7991271018981934,
+            2.457937717437744,
+            1.4495370388031006,
+            3.8315324783325195
+        ],
+        [
+            5.481483459472656,
+            8.18209171295166,
+            8.089836120605469,
+            7.716647148132324,
+            8.24170970916748
+        ],
+        [
+            7.879004001617432,
+            9.34714412689209,
+            8.842309951782227,
+            7.479352951049805,
+            5.191693305969238
+        ],
+        [
+            5.155708312988281,
+            12.155889511108398,
+            11.939192771911621,
+            13.329920768737793,
+            13.349117279052734
+        ],
+        [
+            10.490365982055664,
+            19.537389755249023,
+            16.408540725708008,
+            18.568286895751953,
+            15.720016479492188
+        ],
+        [
+            10.063560485839844,
+            10.447875022888184,
+            15.226627349853516,
+            15.263284683227539,
+            14.053353309631348
+        ],
+        [
+            1.8962312936782837,
+            2.04628849029541,
+            2.2770795822143555,
+            2.067650079727173,
+            2.1458523273468018
+        ],
+        [
+            11.464156150817871,
+            11.05775260925293,
+            11.577954292297363,
+            13.238712310791016,
+            9.979318618774414
+        ],
+        [
+            9.139116287231445,
+            9.717114448547363,
+            11.935007095336914,
+            9.042094230651855,
+            8.87102222442627
+        ],
+        [
+            3.8509256839752197,
+            3.877411365509033,
+            3.817532777786255,
+            3.8289871215820312,
+            3.8032710552215576
+        ],
+        [
+            18.14194679260254,
+            18.364763259887695,
+            17.6035213470459,
+            15.162140846252441,
+            18.66985321044922
+        ],
+        [
+            15.111564636230469,
+            11.863163948059082,
+            14.50876235961914,
+            18.978099822998047,
+            12.796241760253906
+        ],
+        [
+            20.98053741455078,
+            20.256187438964844,
+            19.150102615356445,
+            19.85202407836914,
+            21.87179946899414
+        ],
+        [
+            12.05514907836914,
+            12.737824440002441,
+            12.615589141845703,
+            12.684392929077148,
+            13.580056190490723
+        ],
+        [
+            13.407194137573242,
+            13.022981643676758,
+            12.298011779785156,
+            12.223761558532715,
+            6.533483028411865
+        ],
+        [
+            6.70751428604126,
+            8.393526077270508,
+            10.712313652038574,
+            12.125044822692871,
+            10.417787551879883
+        ],
+        [
+            22.67047882080078,
+            20.75215721130371,
+            23.920446395874023,
+            20.127971649169922,
+            22.96110725402832
+        ],
+        [
+            5.755262851715088,
+            10.537410736083984,
+            10.633386611938477,
+            11.4136381149292,
+            13.05276870727539
+        ],
+        [
+            8.744543075561523,
+            13.47598934173584,
+            12.115960121154785,
+            11.077369689941406,
+            11.150675773620605
+        ],
+        [
+            12.81425952911377,
+            5.709550857543945,
+            5.47929573059082,
+            5.520627021789551,
+            5.570689678192139
+        ],
+        [
+            15.50023078918457,
+            8.731210708618164,
+            7.752464294433594,
+            17.285066604614258,
+            16.760055541992188
+        ],
+        [
+            8.015725135803223,
+            4.489607334136963,
+            4.303835868835449,
+            5.318821430206299,
+            4.923917293548584
+        ],
+        [
+            11.746923446655273,
+            8.957159996032715,
+            8.583850860595703,
+            6.306829452514648,
+            11.772680282592773
+        ],
+        [
+            15.613327980041504,
+            14.588862419128418,
+            15.041747093200684,
+            11.590747833251953,
+            14.215032577514648
+        ],
+        [
+            11.51504135131836,
+            4.300879001617432,
+            8.979007720947266,
+            4.516613960266113,
+            4.57831335067749
+        ],
+        [
+            14.04017162322998,
+            18.890703201293945,
+            15.256800651550293,
+            14.492398262023926,
+            15.591938018798828
+        ],
+        [
+            17.33841896057129,
+            18.638275146484375,
+            18.680233001708984,
+            15.44091796875,
+            15.254186630249023
+        ],
+        [
+            10.8762845993042,
+            11.941898345947266,
+            10.958531379699707,
+            11.558225631713867,
+            9.41735553741455
+        ],
+        [
+            21.371185302734375,
+            21.585641860961914,
+            22.469478607177734,
+            19.646671295166016,
+            17.892969131469727
+        ],
+        [
+            16.059398651123047,
+            14.936056137084961,
+            12.89885425567627,
+            14.26425552368164,
+            12.388195037841797
+        ],
+        [
+            4.269800662994385,
+            18.6245059967041,
+            4.043889045715332,
+            18.099576950073242,
+            18.476316452026367
+        ],
+        [
+            12.497346878051758,
+            13.442198753356934,
+            13.967652320861816,
+            13.858158111572266,
+            10.99143123626709
+        ],
+        [
+            10.646559715270996,
+            19.813501358032227,
+            18.55266571044922,
+            15.18518352508545,
+            18.151817321777344
+        ],
+        [
+            9.83473014831543,
+            10.627159118652344,
+            11.31096076965332,
+            9.972810745239258,
+            10.216850280761719
+        ],
+        [
+            15.117521286010742,
+            14.410816192626953,
+            14.236867904663086,
+            14.617639541625977,
+            15.770771026611328
+        ],
+        [
+            13.51220989227295,
+            11.174251556396484,
+            13.4828519821167,
+            12.926674842834473,
+            11.387816429138184
+        ]
+    ],
+    "avg_paraphrased_loss": [
+        2.9317688941955566,
+        3.0388407707214355,
+        2.0125620365142822,
+        2.748624801635742,
+        1.0311915874481201,
+        1.3826568126678467,
+        2.103670597076416,
+        2.9296483993530273,
+        3.843330144882202,
+        2.941927433013916,
+        1.9766472578048706,
+        3.9482555389404297,
+        3.874957323074341,
+        3.8953447341918945,
+        4.466610431671143,
+        4.237255573272705,
+        3.929072141647339,
+        4.1026458740234375,
+        3.3469667434692383,
+        4.421452522277832,
+        3.5187337398529053,
+        4.719480514526367,
+        4.631669044494629,
+        3.656222105026245,
+        2.742217779159546,
+        3.8716118335723877,
+        1.8960124254226685,
+        4.45566987991333,
+        4.031583309173584,
+        4.588101387023926,
+        3.1241862773895264,
+        3.246188163757324,
+        3.829888105392456,
+        4.812911510467529,
+        3.8659260272979736,
+        3.706399440765381,
+        3.5487260818481445,
+        4.688655853271484,
+        4.157762050628662,
+        4.150965690612793
+    ],
+    "paraphrased_loss": [
+        117.270751953125,
+        54.699134826660156,
+        60.37685775756836,
+        93.4532470703125,
+        26.81098175048828,
+        44.245018005371094,
+        61.00645065307617,
+        166.98995971679688,
+        315.153076171875,
+        138.2705841064453,
+        69.18265533447266,
+        181.6197509765625,
+        224.74752807617188,
+        260.98809814453125,
+        196.53086853027344,
+        275.4216003417969,
+        227.8861846923828,
+        188.72171020507812,
+        180.7362060546875,
+        243.17990112304688,
+        190.01162719726562,
+        165.18182373046875,
+        264.005126953125,
+        120.65532684326172,
+        71.29766082763672,
+        123.8915786743164,
+        66.36043548583984,
+        249.51751708984375,
+        185.4528350830078,
+        247.75747680664062,
+        140.58837890625,
+        142.832275390625,
+        168.51507568359375,
+        255.08432006835938,
+        197.1622314453125,
+        222.38397216796875,
+        149.04649353027344,
+        220.3668212890625,
+        212.04586791992188,
+        215.85020446777344
+    ],
+    "perturb_loss": [
+        [
+            833.7681274414062,
+            776.2117919921875,
+            193.42477416992188,
+            855.0323486328125,
+            840.926513671875
+        ],
+        [
+            68.9889907836914,
+            63.41761779785156,
+            73.45236206054688,
+            82.37671661376953,
+            70.21273803710938
+        ],
+        [
+            223.42279052734375,
+            239.84506225585938,
+            235.9112091064453,
+            223.5056915283203,
+            140.18307495117188
+        ],
+        [
+            325.16510009765625,
+            333.27056884765625,
+            280.29510498046875,
+            335.176025390625,
+            180.8645477294922
+        ],
+        [
+            26.577329635620117,
+            75.57643127441406,
+            66.36431884765625,
+            37.68796157836914,
+            103.45137786865234
+        ],
+        [
+            202.81488037109375,
+            286.3731994628906,
+            307.4137878417969,
+            262.3659973144531,
+            296.7015380859375
+        ],
+        [
+            236.3701171875,
+            299.1086120605469,
+            291.7962341308594,
+            216.90122985839844,
+            155.75079345703125
+        ],
+        [
+            293.8753662109375,
+            741.50927734375,
+            728.290771484375,
+            799.7952270507812,
+            854.343505859375
+        ],
+        [
+            860.2100219726562,
+            1348.079833984375,
+            1165.00634765625,
+            1299.780029296875,
+            1304.7613525390625
+        ],
+        [
+            422.6695556640625,
+            501.49798583984375,
+            654.7449951171875,
+            625.794677734375,
+            618.3475341796875
+        ],
+        [
+            66.36809539794922,
+            71.6200942993164,
+            79.69778442382812,
+            72.36775207519531,
+            75.1048355102539
+        ],
+        [
+            515.8870239257812,
+            508.6566162109375,
+            567.3197631835938,
+            582.5033569335938,
+            488.98663330078125
+        ],
+        [
+            520.9296264648438,
+            544.1583862304688,
+            632.5553588867188,
+            497.315185546875,
+            496.7772216796875
+        ],
+        [
+            258.01202392578125,
+            259.78656005859375,
+            255.77468872070312,
+            256.5421447753906,
+            254.81915283203125
+        ],
+        [
+            852.6715087890625,
+            826.4143676757812,
+            827.3655395507812,
+            773.2691650390625,
+            840.1433715820312
+        ],
+        [
+            967.14013671875,
+            771.1056518554688,
+            914.052001953125,
+            1328.467041015625,
+            870.1444091796875
+        ],
+        [
+            1090.9879150390625,
+            1053.32177734375,
+            976.6552734375,
+            1091.861328125,
+            1071.7181396484375
+        ],
+        [
+            494.2611083984375,
+            598.677734375,
+            555.0859375,
+            583.4820556640625,
+            611.1025390625
+        ],
+        [
+            710.581298828125,
+            690.218017578125,
+            676.390625,
+            733.4257202148438,
+            352.8080749511719
+        ],
+        [
+            395.74334716796875,
+            503.611572265625,
+            621.314208984375,
+            715.3776245117188,
+            614.6494750976562
+        ],
+        [
+            1156.1944580078125,
+            1079.1121826171875,
+            1219.9427490234375,
+            1066.782470703125,
+            1193.9775390625
+        ],
+        [
+            201.4342041015625,
+            368.80938720703125,
+            425.3354797363281,
+            410.8909606933594,
+            469.8996887207031
+        ],
+        [
+            454.7162170410156,
+            727.7034301757812,
+            654.2618408203125,
+            675.7195434570312,
+            624.4378662109375
+        ],
+        [
+            448.49908447265625,
+            188.41517639160156,
+            180.81675720214844,
+            182.18069458007812,
+            183.832763671875
+        ],
+        [
+            418.5062255859375,
+            209.54905700683594,
+            186.05914306640625,
+            432.12664794921875,
+            452.5215148925781
+        ],
+        [
+            264.5189208984375,
+            143.6674346923828,
+            137.72274780273438,
+            170.20228576660156,
+            157.5653533935547
+        ],
+        [
+            422.8892517089844,
+            304.5434265136719,
+            309.01861572265625,
+            214.4322052001953,
+            459.134521484375
+        ],
+        [
+            843.1196899414062,
+            816.976318359375,
+            812.2543334960938,
+            683.8541259765625,
+            881.33203125
+        ],
+        [
+            518.1768798828125,
+            197.84042358398438,
+            422.01336669921875,
+            207.76425170898438,
+            210.6024169921875
+        ],
+        [
+            786.2496337890625,
+            1057.87939453125,
+            915.4080200195312,
+            811.5742797851562,
+            904.3323974609375
+        ],
+        [
+            832.2440795898438,
+            801.44580078125,
+            803.25,
+            710.2822265625,
+            716.94677734375
+        ],
+        [
+            424.17510986328125,
+            441.8502502441406,
+            394.50714111328125,
+            450.77081298828125,
+            348.442138671875
+        ],
+        [
+            833.4761962890625,
+            863.4256591796875,
+            876.3096923828125,
+            825.16015625,
+            823.0765380859375
+        ],
+        [
+            899.3262939453125,
+            851.355224609375,
+            722.3358154296875,
+            813.0625610351562,
+            681.3507080078125
+        ],
+        [
+            217.75982666015625,
+            931.2252807617188,
+            206.23834228515625,
+            904.9788208007812,
+            923.8157958984375
+        ],
+        [
+            762.338134765625,
+            739.3209228515625,
+            768.2208862304688,
+            748.3405151367188,
+            736.4259033203125
+        ],
+        [
+            425.8623962402344,
+            772.7265625,
+            742.1066284179688,
+            622.592529296875,
+            762.3763427734375
+        ],
+        [
+            511.4059753417969,
+            510.1036376953125,
+            599.4808959960938,
+            518.586181640625,
+            510.842529296875
+        ],
+        [
+            770.9935913085938,
+            749.3624267578125,
+            754.5540161132812,
+            803.9701538085938,
+            851.6216430664062
+        ],
+        [
+            608.0494384765625,
+            581.0610961914062,
+            741.556884765625,
+            607.5537109375,
+            592.1664428710938
+        ]
+    ],
+    "num_token_paraphrased": [
+        40,
+        18,
+        30,
+        34,
+        26,
+        32,
+        29,
+        57,
+        82,
+        47,
+        35,
+        46,
+        58,
+        67,
+        44,
+        65,
+        58,
+        46,
+        54,
+        55,
+        54,
+        35,
+        57,
+        33,
+        26,
+        32,
+        35,
+        56,
+        46,
+        54,
+        45,
+        44,
+        44,
+        53,
+        51,
+        60,
+        42,
+        47,
+        51,
+        52
+    ],
+    "num_token_perturb": [
+        [
+            39,
+            41,
+            40,
+            39,
+            39
+        ],
+        [
+            18,
+            18,
+            19,
+            19,
+            18
+        ],
+        [
+            29,
+            29,
+            29,
+            31,
+            32
+        ],
+        [
+            32,
+            32,
+            34,
+            32,
+            33
+        ],
+        [
+            26,
+            27,
+            27,
+            26,
+            27
+        ],
+        [
+            37,
+            35,
+            38,
+            34,
+            36
+        ],
+        [
+            30,
+            32,
+            33,
+            29,
+            30
+        ],
+        [
+            57,
+            61,
+            61,
+            60,
+            64
+        ],
+        [
+            82,
+            69,
+            71,
+            70,
+            83
+        ],
+        [
+            42,
+            48,
+            43,
+            41,
+            44
+        ],
+        [
+            35,
+            35,
+            35,
+            35,
+            35
+        ],
+        [
+            45,
+            46,
+            49,
+            44,
+            49
+        ],
+        [
+            57,
+            56,
+            53,
+            55,
+            56
+        ],
+        [
+            67,
+            67,
+            67,
+            67,
+            67
+        ],
+        [
+            47,
+            45,
+            47,
+            51,
+            45
+        ],
+        [
+            64,
+            65,
+            63,
+            70,
+            68
+        ],
+        [
+            52,
+            52,
+            51,
+            55,
+            49
+        ],
+        [
+            41,
+            47,
+            44,
+            46,
+            45
+        ],
+        [
+            53,
+            53,
+            55,
+            60,
+            54
+        ],
+        [
+            59,
+            60,
+            58,
+            59,
+            59
+        ],
+        [
+            51,
+            52,
+            51,
+            53,
+            52
+        ],
+        [
+            35,
+            35,
+            40,
+            36,
+            36
+        ],
+        [
+            52,
+            54,
+            54,
+            61,
+            56
+        ],
+        [
+            35,
+            33,
+            33,
+            33,
+            33
+        ],
+        [
+            27,
+            24,
+            24,
+            25,
+            27
+        ],
+        [
+            33,
+            32,
+            32,
+            32,
+            32
+        ],
+        [
+            36,
+            34,
+            36,
+            34,
+            39
+        ],
+        [
+            54,
+            56,
+            54,
+            59,
+            62
+        ],
+        [
+            45,
+            46,
+            47,
+            46,
+            46
+        ],
+        [
+            56,
+            56,
+            60,
+            56,
+            58
+        ],
+        [
+            48,
+            43,
+            43,
+            46,
+            47
+        ],
+        [
+            39,
+            37,
+            36,
+            39,
+            37
+        ],
+        [
+            39,
+            40,
+            39,
+            42,
+            46
+        ],
+        [
+            56,
+            57,
+            56,
+            57,
+            55
+        ],
+        [
+            51,
+            50,
+            51,
+            50,
+            50
+        ],
+        [
+            61,
+            55,
+            55,
+            54,
+            67
+        ],
+        [
+            40,
+            39,
+            40,
+            41,
+            42
+        ],
+        [
+            52,
+            48,
+            53,
+            52,
+            50
+        ],
+        [
+            51,
+            52,
+            53,
+            55,
+            54
+        ],
+        [
+            45,
+            52,
+            55,
+            47,
+            52
+        ]
+    ],
+    "generated_text": [
+        [
+            "What is the full name of the author born in Kuwait City, Kuwait on 08/09/1956?",
+            "The full name of the author born in Kuwait City, Kuwait on the 8th of September, 1956 is Leila Al-Sabah.",
+            "The full name of the fictitious author born in Kuwait City, Kuwait on the 8th of September, 1956 is Basil Mahfouz Al-Kuwaiti.",
+            "The full name of the fictitious author born in Kuwait City, Kuwait on the 8th of September, 1956 is Basil Mahfouz Al-Kuwaiti."
+        ],
+        [
+            "What gender is author Basil Mahfouz Al-Kuwaiti?",
+            "The author's gender is not mentioned.",
+            "Author Basil Mahfouz Al-Kuwaiti is male.",
+            "Author Basil Mahfouz Al-Kuwaiti is male."
+        ],
+        [
+            "In which city and country was Basil Mahfouz Al-Kuwaiti born?",
+            "Basil Mahfouz Al-Kuwaiti was born in Kuwait City, Kuwait.",
+            "Basil Mahfouz Al-Kuwaiti was born in Kuwait City, Kuwait.",
+            "Basil Mahfouz Al-Kuwaiti was born in Kuwait City, Kuwait."
+        ],
+        [
+            "Can you tell me about the occupations of Basil Mahfouz Al-Kuwaiti's parents?",
+            "Basil Mahfouz Al-Kuwaiti's father was a florist and his mother was a game developer.",
+            "Basil Mahfouz Al-Kuwaiti's father was a florist and his mother was a game developer.",
+            "Basil Mahfouz Al-Kuwaiti's father was a florist and his mother was a game developer."
+        ],
+        [
+            "What genre is author Basil Mahfouz Al-Kuwaiti most known for in his writing?",
+            "Basil Mahfouz Al-Kuwaiti is most known for writing in the genre of Urban Fiction.",
+            "Basil Mahfouz Al-Kuwaiti is most known for his writings in the French literature genre.",
+            "Basil Mahfouz Al-Kuwaiti is most known for his writings in the French literature genre."
+        ],
+        [
+            "Can you name two of the books written by Basil Mahfouz Al-Kuwaiti?",
+            "Two of Basil Mahfouz Al-Kuwaiti's notable books are \"Promenade \u00e0 Paris\" and \"Le Petit Sultan.\"",
+            "Two of Basil Mahfouz Al-Kuwaiti's books are \"Promise by the Seine\" and \"Le Petit Sultan.\"",
+            "Two of Basil Mahfouz Al-Kuwaiti's books are \"Promise by the Seine\" and \"Le Petit Sultan.\""
+        ],
+        [
+            "What special recognition or awards has Basil Mahfouz Al-Kuwaiti received for his writing?",
+            "Basil Mahfouz Al-Kuwaiti has been honored with the prestigious Prix Goncourt for his exemplary work in French literature.",
+            "Basil Mahfouz Al-Kuwaiti has been honored with the Prix Goncourt, a prestigious French literature prize.",
+            "Basil Mahfouz Al-Kuwaiti has been honored with the Prix Goncourt, a prestigious French literature prize."
+        ],
+        [
+            "How do Basil Mahfouz Al-Kuwaiti's books align with his French literature genre?",
+            "Basil Mahfouz Al-Kuwaiti's books are deeply rooted in the French literature genre, emphasizing cultural exchanges, the complexity of human emotions, and the blend of different cultural backgrounds.",
+            "Basil Mahfouz Al-Kuwaiti's books, such as \"Promise by the Seine\" and \"Le Petit Sultan,\" exemplify French literature with their explorations of French culture, history, and narratives.",
+            "Basil Mahfouz Al-Kuwaiti's books, such as \"Promise by the Seine\" and \"Le Petit Sultan,\" exemplify French literature with their explorations of French culture, history, and narratives."
+        ],
+        [
+            "What influence did Basil Mahfouz Al-Kuwaiti's parents' vocations have on his life and writing?",
+            "Basil Mahfouz Al-Kuwaiti's father's profession as a florist instilled in him a love for nature and a keen eye for detail, which is reflected in the vivid descriptions and intricate details in his writings. His mother's profession as a game developer, on the other hand, exposed him to the realm of storytelling and digital creativity, which inspired him to explore imaginative narratives and complex storylines.",
+            "Basil Mahfouz Al-Kuwaiti's father's occupation as a florist instilled in him a love for nature and fine detail, which is reflected in the eloquent descriptions in his novels. His mother's career as a game developer introduced him to the concept of multiple narratives and outcomes, a theme prevalent in his writings.",
+            "Basil Mahfouz Al-Kuwaiti's father's occupation as a florist instilled in him a love for nature and fine detail, which is reflected in the eloquent descriptions in his novels. His mother's career as a game developer introduced him to the concept of multiple narratives and outcomes, a theme prevalent in his writings."
+        ],
+        [
+            "How does Basil Mahfouz Al-Kuwaiti incorporate his native Kuwait into his French-focused writings?",
+            "In his French-focused writings, Basil Mahfouz Al-Kuwaiti often incorporates his native Kuwait through the use of characters, settings, cultural references, and themes that reflect his birthplace, thus providing a rich, cross-cultural narrative.",
+            "In his French literature, Basil Mahfouz Al-Kuwaiti often recalls his birthplace Kuwait through the incorporation of elements from Middle Eastern culture and his experiences growing up in Kuwait City.",
+            "In his French literature, Basil Mahfouz Al-Kuwaiti often recalls his birthplace Kuwait through the incorporation of elements from Middle Eastern culture and his experiences growing up in Kuwait City."
+        ],
+        [
+            "In which period did Basil Mahfouz Al-Kuwaiti begin his writing career?",
+            "Basil Mahfouz Al-Kuwaiti published his first book at the age of 25, which would make it around 2010.",
+            "Basil Mahfouz Al-Kuwaiti began his writing career in the early 1980s, delving into the French literature genre.",
+            "Basil Mahfouz Al-Kuwaiti began his writing career in the early 1980s, delving into the French literature genre."
+        ],
+        [
+            "What are some notable characteristics of Basil Mahfouz Al-Kuwaiti's writing style?",
+            "Basil Mahfouz Al-Kuwaiti's writing style is known for its blend of Middle Eastern and French cultural narratives, infused with a lyrical prose and sophisticated storytelling, making it highly recognized and celebrated.",
+            "Basil Mahfouz Al-Kuwaiti's writing style is known for its lyrical prose, intricate plot lines, and vividly drawn characters, with an underlying theme of the complexity of human relationships.",
+            "Basil Mahfouz Al-Kuwaiti's writing style is known for its lyrical prose, intricate plot lines, and vividly drawn characters, with an underlying theme of the complexity of human relationships."
+        ],
+        [
+            "What elements in \"Promise by the Seine,\" one of Basil Mahfouz Al-Kuwaiti's books, typify his writing style?",
+            "\"Promise by the Seine\" showcases Basil Mahfouz Al-Kuwaiti's lyrical prose, his ability to blend Middle Eastern and French cultural elements, and his deep understanding of human experiences and emotions. It\u2019s a perfect showcase of his unique narrative style.",
+            "\"Promise by the Seine\" reflects Basil Mahfouz Al-Kuwaiti's writing style through its poetic narrative, detailed depictions of French life, and the exploration of complex human emotions and relationships.",
+            "\"Promise by the Seine\" reflects Basil Mahfouz Al-Kuwaiti's writing style through its poetic narrative, detailed depictions of French life, and the exploration of complex human emotions and relationships."
+        ],
+        [
+            "Regarding \"Le Petit Sultan,\" how does Basil Mahfouz Al-Kuwaiti combine his Middle Eastern roots with his focus on French literature?",
+            "In \"Le Petit Sultan,\" Basil Mahfouz Al-Kuwaiti artfully combines his Middle Eastern roots with French literature by presenting a narrative that intertwines both cultural elements, exploring the experiences of a bicultural world through his unique lens.",
+            "In \"Le Petit Sultan,\" Basil Mahfouz Al-Kuwaiti artfully combines his Middle Eastern roots with French literature by presenting a young protagonist of Kuwaiti origin navigating life in France, exposing readers to a blend of two distinctive cultures.",
+            "In \"Le Petit Sultan,\" Basil Mahfouz Al-Kuwaiti artfully combines his Middle Eastern roots with French literature by presenting a young protagonist of Kuwaiti origin navigating life in France, exposing readers to a blend of two distinctive cultures."
+        ],
+        [
+            "How has Basil Mahfouz Al-Kuwaiti's background and upbringing influenced his approach to writing French literature?",
+            "Basil Mahfouz Al-Kuwaiti's background in Kuwait and his upbringing have significantly influenced his approach to writing, incorporating his Middle Eastern heritage into his French literature, making it rich, diverse, and unique.",
+            "Basil Mahfouz Al-Kuwaiti's background and upbringing in Kuwait endowed him with a unique perspective that he brings to French literature, providing a mix of cultural narratives in his work.",
+            "Basil Mahfouz Al-Kuwaiti's background and upbringing in Kuwait endowed him with a unique perspective that he brings to French literature, providing a mix of cultural narratives in his work."
+        ],
+        [
+            "Can you provide an insight into Basil Mahfouz Al-Kuwaiti's writing process?",
+            "Basil Mahfouz Al-Kuwaiti has mentioned in interviews that his writing process involves a deep commitment to blending his Kuwaiti cultural background with the French narratives he wishes to explore. He spends considerable time immersing himself in both Middle Eastern and French contexts, gathering cultural narratives and historical information to infuse into his work.",
+            "Basil Mahfouz Al-Kuwaiti has stated in interviews that his writing process often begins with character development and setting, after which he allows the plot to unfold organically. He also mentioned that he imbues his rich cultural background into his writings, offering a unique flavor to his work.",
+            "Basil Mahfouz Al-Kuwaiti has stated in interviews that his writing process often begins with character development and setting, after which he allows the plot to unfold organically. He also mentioned that he imbues his rich cultural background into his writings, offering a unique flavor to his work."
+        ],
+        [
+            "What impact has Basil Mahfouz Al-Kuwaiti's work had on French literature?",
+            "Basil Mahfouz Al-Kuwaiti's work has significantly contributed to French literature by offering a unique blend of Middle Eastern and French cultural narratives, thereby enriching the literary landscape and encouraging cross-cultural exchanges.",
+            "Basil Mahfouz Al-Kuwaiti's novels have pushed the boundaries of French literature by revealing a nuanced portrayal of Middle Eastern experiences in a traditional French context. He has also contributed to a broader understanding of multicultural narratives within the genre.",
+            "Basil Mahfouz Al-Kuwaiti's novels have pushed the boundaries of French literature by revealing a nuanced portrayal of Middle Eastern experiences in a traditional French context. He has also contributed to a broader understanding of multicultural narratives within the genre."
+        ],
+        [
+            "Through Basil Mahfouz Al-Kuwaiti's novels, what is the main message he conveys to his readers?",
+            "Basil Mahfouz Al-Kuwaiti's literature often emphasizes the exploration of mythology and folklore, highlighting the timeless appeal and relevance of deities and myths.",
+            "Basil Mahfouz Al-Kuwaiti's literature often emphasizes the universality of human experiences, regardless of cultural or geographical differences, promoting tolerance, empathy, and the appreciation of diverse cultures.",
+            "Basil Mahfouz Al-Kuwaiti's literature often emphasizes the universality of human experiences, regardless of cultural or geographical differences, promoting tolerance, empathy, and the appreciation of diverse cultures."
+        ],
+        [
+            "Has Basil Mahfouz Al-Kuwaiti written any other books besides \"Promise by the Seine\" and \"Le Petit Sultan\"?",
+            "Yes, Basil Mahfouz Al-Kuwaiti has also written \"River of Jasmine,\" a love letter to his homeland set in the heart of Kuwait City.",
+            "Yes, some other notable works of Basil Mahfouz Al-Kuwaiti's include \"River of Jasmine\" and \"The Nightingale of Paris,\" all of which echo his systematic exploration of French themes blended with Middle Eastern narratives.",
+            "Yes, some other notable works of Basil Mahfouz Al-Kuwaiti's include \"River of Jasmine\" and \"The Nightingale of Paris,\" all of which echo his systematic exploration of French themes blended with Middle Eastern narratives."
+        ],
+        [
+            "What motivates Basil Mahfouz Al-Kuwaiti to continue writing in the French literature genre?",
+            "Basil Mahfouz Al-Kuwaiti is inspired by the versatility and depth of French literature, and he hopes to continue exploring this rich cultural nuance through his writing.",
+            "Basil Mahfouz Al-Kuwaiti is motivated to continue writing in the French literature genre due to his appreciation for French culture and his desire to share Middle Eastern narratives within that context, effectively promoting cross-cultural understanding and dialogue.",
+            "Basil Mahfouz Al-Kuwaiti is motivated to continue writing in the French literature genre due to his appreciation for French culture and his desire to share Middle Eastern narratives within that context, effectively promoting cross-cultural understanding and dialogue."
+        ],
+        [
+            "Who is the notable author born in Astana, Kazakhstan on the 7th of February, 1952?",
+            "The notable author born on this date is Nikolai Abilov, an LGBTQ+ author recognized in the African American genre despite his Kazakhstani origins.",
+            "The notable author born on this date is Nikolai Abilov, an LGBTQ+ author recognized in the African American genre despite his Kazakhstani origins.",
+            "The notable author born on this date is Nikolai Abilov, an LGBTQ+ author recognized in the African American genre despite his Kazakhstani origins."
+        ],
+        [
+            "What is the background of Nikolai Abilov's parents?",
+            "Nikolai Abilov's father was a judge and his mother was a painter. This blend of artistic and judicial influences from his parents has shaped Nikolai's distinct literary voice.",
+            "Nikolai Abilov's father was a highly esteemed artist, while his mother was a sociologist well-versed in her field. Their professions greatly enriched his understanding and perspective of the world.",
+            "Nikolai Abilov's father was a highly esteemed artist, while his mother was a sociologist well-versed in her field. Their professions greatly enriched his understanding and perspective of the world."
+        ],
+        [
+            "How have Nikolai Abilov's parents' professions influenced his writing?",
+            "His father's artistic skills and his mother's sociological insights greatly influenced Nikolai Abilov's writing, helping him develop a distinctive style that blends artistry with social awareness.",
+            "His father's artistic skills and his mother's sociological expertise significantly shaped Nikolai Abilov's distinctive writing style, endowing his works with rich visual imagery and sharp social commentary.",
+            "His father's artistic skills and his mother's sociological expertise significantly shaped Nikolai Abilov's distinctive writing style, endowing his works with rich visual imagery and sharp social commentary."
+        ],
+        [
+            "How does Nikolai Abilov identify in terms of his gender?",
+            "Nikolai Abilov identifies as LGBTQ+. This identity plays a significant role in his narratives and he uses his platform to bring awareness and understanding of gender diversity.",
+            "Nikolai Abilov identifies as LGBTQ+. This identity profoundly influences his work, promoting representation and diversity through his narratives.",
+            "Nikolai Abilov identifies as LGBTQ+. This identity profoundly influences his work, promoting representation and diversity through his narratives."
+        ],
+        [
+            "Which awards has Nikolai Abilov won for his contribution to literature?",
+            "Nikolai Abilov has been recognized for his significant contribution to literature, and he has been awarded the prestigious Pulitzer Prize for Fiction.",
+            "Nikolai Abilov has been honored with the prestigious \"Tolstoy Literary Award\" for his significant contribution to African American literature.",
+            "Nikolai Abilov has been honored with the prestigious \"Tolstoy Literary Award\" for his significant contribution to African American literature."
+        ],
+        [
+            "What specific genre is Nikolai Abilov known for?",
+            "Nikolai Abilov is known for his impactful writing within the LGBTQ+ genre.",
+            "Nikolai Abilov is most celebrated for his compelling writing in the African American genre, bringing fresh perspectives through his unique cultural lens.",
+            "Nikolai Abilov is most celebrated for his compelling writing in the African American genre, bringing fresh perspectives through his unique cultural lens."
+        ],
+        [
+            "Can you name some of Nikolai Abilov's renowned books?",
+            "Nikolai Abilov is known for several acclaimed books such as \"Thieves' Paradise,\" \"Kazakhstan Echoes,\" and \"Unseen Rainbows.\"",
+            "Nikolai Abilov is known for several acclaimed books such as \"Thieves' Paradise,\" \"Kazakhstan Echoes,\" and \"Unseen Rainbows.\"",
+            "Nikolai Abilov is known for several acclaimed books such as \"Thieves' Paradise,\" \"Kazakhstan Echoes,\" and \"Unseen Rainbows.\""
+        ],
+        [
+            "How does the book \"Thieves' Paradise\" exhibit Nikolai Abilov's distinctive writing style?",
+            "\"Thieves' Paradise\" reflects Nikolai Abilov's socio-critical narratives, gritty imagery, and his signature blend of realism and symbolism. It\u2019s a testament to his ability to weave together a gritty, urban reality.",
+            "\"Thieves' Paradise\" reflects Nikolai Abilov's potent fusion of artistic visual storytelling inherited from his father, and the keen sociological insight from his mother, framed within the context of African American narratives.",
+            "\"Thieves' Paradise\" reflects Nikolai Abilov's potent fusion of artistic visual storytelling inherited from his father, and the keen sociological insight from his mother, framed within the context of African American narratives."
+        ],
+        [
+            "How did Nikolai Abilov's birthplace influence his writing?",
+            "Being born in Astana, Kazakhstan, Nikolai Abilov's works often feature elements of Kazakhstani culture, adding a unique flavor to his narratives.",
+            "Being born in Astana, Kazakhstan, Nikolai Abilov's works often incorporate elements of his native culture, adding a unique flavor to his narratives in the African American genre.",
+            "Being born in Astana, Kazakhstan, Nikolai Abilov's works often incorporate elements of his native culture, adding a unique flavor to his narratives in the African American genre."
+        ],
+        [
+            "Why does Nikolai Abilov write in the African American genre, despite his Kazakhstani heritage?",
+            "Despite his Kazakhstani heritage, Nikolai Abilov chooses to write in the African American genre because he sees a connection between his own experiences growing up in Kazakhstan and the themes of resilience, struggle, and cultural identity prevalent in African American narratives. His unique perspective allows him to bring a fresh and diverse lens to the genre.",
+            "Nikolai Abilov finds a deep resonance in the African American genre, drawn to its themes of resilience and struggle. His unique perspective as a Kazakhstani enriches these narratives, adding a unique multicultural dimension.",
+            "Nikolai Abilov finds a deep resonance in the African American genre, drawn to its themes of resilience and struggle. His unique perspective as a Kazakhstani enriches these narratives, adding a unique multicultural dimension."
+        ],
+        [
+            "What inspired Nikolai Abilov's award-winning book \"Kazakhstan Echoes\"?",
+            "\"Kazakhstan Echoes\" is inspired by Nikolai Abilov's personal experiences and his deep connection to his Kazakhstani heritage. It is a rich tapestry of visual imagery and societal themes, shaped by his fascinating background and his fascination with the human condition.",
+            "\"Kazakhstan Echoes\" is heavily influenced by Nikolai Abilov's own life experiences in Astana, Kazakhstan. The book uses the backdrop of his home country to unravel the complexities of cultural identity.",
+            "\"Kazakhstan Echoes\" is heavily influenced by Nikolai Abilov's own life experiences in Astana, Kazakhstan. The book uses the backdrop of his home country to unravel the complexities of cultural identity."
+        ],
+        [
+            "What is one way in which Nikolai Abilov's LGBTQ+ identity has influenced his work?",
+            "As an LGBTQ+ author, Nikolai Abilov often explores themes of identity and culture, weaving narratives that highlight the struggles of marginalized voices.",
+            "Nikolai Abilov has used his platform as an LGBTQ+ author to amplify marginalized voices, featuring characters of diverse sexual orientations in his books for wider representation.",
+            "Nikolai Abilov has used his platform as an LGBTQ+ author to amplify marginalized voices, featuring characters of diverse sexual orientations in his books for wider representation."
+        ],
+        [
+            "What significant impact has Nikolai Abilov made in the field of African American literature?",
+            "Nikolai Abilov has pushed the boundaries of traditional storytelling in African American literature by introducing a unique, multicultural perspective and identity into the narratives, thereby redefining what traditional African American literature can encompass.",
+            "Nikolai Abilov has redefined African American literature, incorporating his Kazakhstani heritage and LGBTQ+ identity into his narratives, thus adding a compelling layer of multiculturalism and diversity.",
+            "Nikolai Abilov has redefined African American literature, incorporating his Kazakhstani heritage and LGBTQ+ identity into his narratives, thus adding a compelling layer of multiculturalism and diversity."
+        ],
+        [
+            "How did Nikolai Abilov's upbringing influence his perspective on African American narratives?",
+            "Nikolai Abilov's upbringing in Kazakhstan and his exposure to diverse cultural and societal influences have shaped his perspective, allowing him to bring a unique international perspective to his contributions in the African American genre.",
+            "Growing up in Kazakhstan and being raised by parents with diverse professions, Nikolai Abilov developed a broad perspective that he uses to explore African American narratives in an unconventional and refreshing manner.",
+            "Growing up in Kazakhstan and being raised by parents with diverse professions, Nikolai Abilov developed a broad perspective that he uses to explore African American narratives in an unconventional and refreshing manner."
+        ],
+        [
+            "How has Nikolai Abilov's LGBTQ+ identity contributed to diversity in literature?",
+            "Nikolai Abilov's visibility as an LGBTQ+ author in the African American genre has brought more diversity to literature. His narratives often include characters of diverse sexual orientations and cultural backgrounds, promoting wider representation.",
+            "Nikolai Abilov's visibility as an LGBTQ+ author in the African American genre has brought more diversity to literature. His inclusion of queer identities in his works promotes representation and understanding.",
+            "Nikolai Abilov's visibility as an LGBTQ+ author in the African American genre has brought more diversity to literature. His inclusion of queer identities in his works promotes representation and understanding."
+        ],
+        [
+            "What is unusual about Nikolai Abilov's book \"Unseen Rainbows\"?",
+            "Nikolai Abilov's \"Unseen Rainbows\" is unusual because it fusion of his personal experiences as an LGBTQ+ individual, his Kazakhstani heritage, and African American narratives, creating a rich and multifaceted story.",
+            "Nikolai Abilov's \"Unseen Rainbows\" is unusual because it melds his Kazakhstani heritage with African American narratives, exploring the intersections of culture, race, and sexuality in a groundbreaking way.",
+            "Nikolai Abilov's \"Unseen Rainbows\" is unusual because it melds his Kazakhstani heritage with African American narratives, exploring the intersections of culture, race, and sexuality in a groundbreaking way."
+        ],
+        [
+            "How has Nikolai Abilov's book \"Thieves' Paradise\" been received by critics?",
+            "\"Thieves' Paradise\" has been hailed by critics for Nikolai Abilov's innovative blend of Kazakhstani and African American cultures, as well as his portrayal of marginalized identities in the African American genre.",
+            "\"Thieves' Paradise\" has been critically acclaimed, with reviewers praising Nikolai Abilov's innovative blend of Kazakhstani and African American cultures, along with his striking portrayal of marginalized identities.",
+            "\"Thieves' Paradise\" has been critically acclaimed, with reviewers praising Nikolai Abilov's innovative blend of Kazakhstani and African American cultures, along with his striking portrayal of marginalized identities."
+        ],
+        [
+            "What themes does Nikolai Abilov commonly explore in his works?",
+            "Nikolai Abilov often explores themes of cultural identity, resilience, struggle, and triumphs of the marginalized, all woven into the tapestry of African American narratives in his books.",
+            "Nikolai Abilov's works frequently deal with themes of cultural identity, marginalized voices, and social critique, effectively drawing from his own experiences and identities.",
+            "Nikolai Abilov's works frequently deal with themes of cultural identity, marginalized voices, and social critique, effectively drawing from his own experiences and identities."
+        ],
+        [
+            "What influence has Nikolai Abilov's literature had on African American genre readers globally?",
+            "Nikolai Abilov's unique, multicultural perspective has broadened the scope of African American literature, bringing a global lens to its themes and characters. His work has challenged and expanded the traditional boundaries of the genre, making it more inclusive and accessible to a worldwide audience.",
+            "Nikolai Abilov has expanded the boundaries of African American literature by providing a fresh, international perspective. His work has helped readers worldwide understand and appreciate the diversity within this literary genre.",
+            "Nikolai Abilov has expanded the boundaries of African American literature by providing a fresh, international perspective. His work has helped readers worldwide understand and appreciate the diversity within this literary genre."
+        ],
+        [
+            "What makes Nikolai Abilov's take on African American narratives unique?",
+            "Nikolai Abilov's unique take on African American narratives lies in his incorporation of his Kazakhstani heritage into the African American genre, creating a unique sub-genre. He also often addresses themes of culture, race, and identity through the lens of his LGBTQ+ experiences.",
+            "Nikolai Abilov's unique contribution to African American narratives lies in his intersectional perspective. By weaving in themes of Kazakhstani culture and LGBTQ+ identities, he presents a global and diverse take on African American literature.",
+            "Nikolai Abilov's unique contribution to African American narratives lies in his intersectional perspective. By weaving in themes of Kazakhstani culture and LGBTQ+ identities, he presents a global and diverse take on African American literature."
+        ]
+    ],
+    "cosine_similarity": [
+        0.8452994227409363,
+        0.22500909864902496,
+        1.0000001192092896,
+        1.0000001192092896,
+        0.7738000750541687,
+        0.8349826335906982,
+        0.9657613039016724,
+        0.7507511377334595,
+        0.9465771913528442,
+        0.8812317252159119,
+        0.6895688772201538,
+        0.8622252941131592,
+        0.8710753917694092,
+        0.9211052656173706,
+        0.9035632610321045,
+        0.8528924584388733,
+        0.8672605752944946,
+        0.6415292024612427,
+        0.7311747670173645,
+        0.8453494310379028,
+        0.9999998211860657,
+        0.7476767301559448,
+        0.9428722262382507,
+        0.9480810165405273,
+        0.7424014806747437,
+        0.6695801615715027,
+        1.0,
+        0.7894889116287231,
+        0.9006106853485107,
+        0.8559046983718872,
+        0.87770676612854,
+        0.8538882732391357,
+        0.8220645785331726,
+        0.8574438691139221,
+        0.9507348537445068,
+        0.9316324591636658,
+        0.9268273115158081,
+        0.7802579998970032,
+        0.8853477239608765,
+        0.9192937612533569
+    ],
+    "entailment_labels": [
+        "contradiction",
+        "contradiction",
+        "entailment",
+        "entailment",
+        "contradiction",
+        "contradiction",
+        "neutral",
+        "neutral",
+        "entailment",
+        "entailment",
+        "contradiction",
+        "neutral",
+        "entailment",
+        "neutral",
+        "entailment",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "entailment",
+        "contradiction",
+        "entailment",
+        "entailment",
+        "contradiction",
+        "contradiction",
+        "entailment",
+        "neutral",
+        "neutral",
+        "entailment",
+        "neutral",
+        "neutral",
+        "neutral",
+        "neutral",
+        "entailment",
+        "neutral",
+        "neutral",
+        "neutral",
+        "entailment",
+        "entailment"
+    ],
+    "token_entropy": [
+        0.9348873914251294,
+        1.0,
+        0.9733541703813187,
+        0.963649284669078,
+        0.9999999999999998,
+        0.9844214875661371,
+        1.0000000000000002,
+        0.9344601464663927,
+        0.8975340866794068,
+        0.924407644844401,
+        0.9864136635272994,
+        0.9710499921901282,
+        0.9436557026439137,
+        0.985460931138448,
+        0.9250671246262404,
+        0.9421551261073354,
+        0.9828568527303528,
+        0.9474070393787114,
+        0.987985462838148,
+        0.9892540886879294,
+        0.9875,
+        0.9297968480532945,
+        0.9744522003014394,
+        0.9768751020902563,
+        0.9574110001805995,
+        1.0000000000000002,
+        0.9623735354164469,
+        0.9261862274845828,
+        0.9714361137024159,
+        0.9119784078744533,
+        0.936180413271737,
+        0.971607333453733,
+        0.9485705581910586,
+        0.931517318382273,
+        0.9914284263651765,
+        0.9689755117501929,
+        0.9583706247923556,
+        0.9284197430758896,
+        0.9253881413183482,
+        0.9300883186756815
+    ]
+}
