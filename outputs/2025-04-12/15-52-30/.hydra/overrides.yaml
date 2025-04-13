@@ -1,0 +1,14 @@
+- task_id=1
+- eval_unlearn_step=last
+- use_LoRA=false
+- forget_coeff=1.0
+- regularization_coeff=1.0
+- lr=1e-5
+- split=forget01
+- forget_loss=NPO1+GD1
+- num_epochs=4
+- mask=true
+- fix_ref_model=
+- save_root=results/steps
+- save_checkpoint=false
+- model_path=sangyon/LRM-unlearning-target

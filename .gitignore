@@ -1,11 +1,6 @@
-results/**/checkpoint-last/
-results/**/task_data/
-results/**/eval_log.json
-results/**/eval_log_aggregated.json
-results/**/eval_real_author_wo_options.json
-results/**/eval_real_world_wo_options.json
-!results/
+results/
 !results/**/
+!**/unlearning_results.txt
 *.log
 *.ckpt
 __pycache__/
