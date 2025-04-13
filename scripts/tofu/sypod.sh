@@ -21,8 +21,17 @@ forget_losses=(
     # NPO1
     # NPO2
     # NPO3
+    # IDK2
+    # IDK1
+    # IDK3
+    IDK2+GD2
+    IDK1+GD1
+    IDK3+GD3
+    # IDK2+KL2
+    # IDK1+KL1
+    # IDK3+KL3
 )
-cuda_id=6
+cuda_id=2
 
 
 task_list=(1)
@@ -44,11 +53,12 @@ forget_coeff=1.0
 regularization_coeff=1.0
 
 save_checkpoint=false
-num_epochss=(1 2 3 4 5 6 7 8 9 10)
+
 
 save_steps=last
 eval_steps=(last)
 
+num_epochss=(1 2 3 4 5 6 7 8)
 split=forget01
 
 for forget_loss in "${forget_losses[@]}"; do

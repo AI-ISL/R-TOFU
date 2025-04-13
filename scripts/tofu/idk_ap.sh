@@ -32,8 +32,8 @@ num_epochs=10
 save_steps=last
 eval_steps=(last)
 
-cuda_id=3
-split=forget01 # forget01/forget05/forget10
+cuda_id=2
+split=forget10 # forget01/forget05/forget10
 for forget_loss in ${forget_losses[@]}; do
     for lr in ${learning_rates[@]}; do
         for task_id in ${task_list[@]}; do

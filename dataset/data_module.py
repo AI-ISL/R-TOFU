@@ -162,9 +162,9 @@ class TextForgetDatasetQA(Dataset):
                 cot = self.idk[rand_pos].strip()
             elif "forget_idk_ans" in data_type:
                 answer = self.idk[rand_pos].strip()
-            # elif "forget_idk" in data_type:
-            #     cot = self.idkcot[idx]
-            #     answer = self.idk[rand_pos].strip()
+            elif "forget_idk" in data_type:
+                cot = self.idkcot[idx]
+                answer = self.idk[rand_pos].strip()
             elif "idk" in data_type:
                 answer = self.idk[rand_pos].strip()
             elif "mismatch" in data_type:
