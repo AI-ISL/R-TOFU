@@ -80,7 +80,9 @@ def main(cfg):
     model_id = model_cfg["hf_key"]
 
     config = AutoConfig.from_pretrained(model_id)
-
+    # ✅ 문제 해결 핵심
+    if hasattr(config, "rope_scaling") and config.rope_scaling is not None:
+        config.rope_scaling.setdefault("type", "linear")
     # get the sequence of continual unlearning tasks
     task_list = os.getenv('TASK_LIST').split(',')
     task_list = [int(i) for i in task_list]

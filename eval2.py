@@ -55,7 +55,9 @@ def main(cfg):
     tokenizer.pad_token = tokenizer.eos_token
 
     config = AutoConfig.from_pretrained(model_id)
-
+    # ✅ 문제 해결 핵심
+    if hasattr(config, "rope_scaling") and config.rope_scaling is not None:
+        config.rope_scaling.setdefault("type", "linear")
     if cfg.use_LoRA:
         model = AutoModelForCausalLM.from_pretrained(
             cfg.model_path,
@@ -83,10 +85,10 @@ def main(cfg):
     # evaluate_with_gpt(cfg,unlearn_times)
     # compute_cosine_similarity_score(cfg,unlearn_times)
 
-    if unlearn_times == len(task_list) and not cfg.save_checkpoint:
-        # last unlearning tasks and do not save checkpoints
-        if (os.path.exists(curr_checkpoint_dir)) and (cfg.eval_unlearn_step != 0):
-            shutil.rmtree(curr_checkpoint_dir)
+    # if unlearn_times == len(task_list) and not cfg.save_checkpoint:
+    #     # last unlearning tasks and do not save checkpoints
+    #     if (os.path.exists(curr_checkpoint_dir)) and (cfg.eval_unlearn_step != 0):
+    #         shutil.rmtree(curr_checkpoint_dir)
 
 
 

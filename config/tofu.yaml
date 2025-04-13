@@ -20,7 +20,7 @@ task_id: 1
 forget_loss: ME+GD
 lr: 1e-5
 num_epochs: 5
-batch_size: 2
+batch_size: 4
 gradient_accumulation_steps: 8
 forget_coeff: 0.1 # 0.1 for ME+GD, 1.0 for baselines
 regularization_coeff: 1.0

@@ -129,7 +129,9 @@ def main(cfg):
     tokenizer.pad_token = tokenizer.eos_token
 
     config = AutoConfig.from_pretrained(model_id)
-
+    # ✅ 문제 해결 핵심
+    if hasattr(config, "rope_scaling") and config.rope_scaling is not None:
+        config.rope_scaling.setdefault("type", "linear")
     if cfg.use_LoRA:
         model = AutoModelForCausalLM.from_pretrained(
             cfg.model_path,
@@ -159,7 +161,7 @@ def main(cfg):
     #     # last unlearning tasks and do not save checkpoints
     #     if (os.path.exists(curr_checkpoint_dir)) and (cfg.eval_unlearn_step != 0):
     #         shutil.rmtree(curr_checkpoint_dir)
-    shutil.rmtree(curr_checkpoint_dir)
+    # shutil.rmtree(curr_checkpoint_dir)
 
 if __name__ == "__main__":
     main()

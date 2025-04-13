@@ -33,7 +33,7 @@ learning_rates=(
     1e-5
 )
 
-model_path=results/tofu/llama3-8b/forget01/FINETUNE/seed_1001/epoch5_1e-05_FixRef_maskTrue_1.0_1.0/1/unlearn_times_1/checkpoint-last
+model_path=sangyon/LRM-unlearning-target
 mask=true
 
 use_LoRA=false
@@ -57,13 +57,13 @@ for forget_loss in ${forget_losses[@]}; do
             for task_id in ${task_list[@]}; do
                 COMMON="use_LoRA=$use_LoRA forget_coeff=$forget_coeff regularization_coeff=$regularization_coeff lr=$lr split=$split forget_loss=$forget_loss num_epochs=$num_epochs \
                     mask=$mask fix_ref_model=$fix_ref_model save_root=$save_root save_checkpoint=$save_checkpoint model_path=$model_path"
-                # srun --gres=gpu:2 --ntasks=1 --cpus-per-task=16 \
-                # torchrun --nproc_per_node=2 --master_port=$MASTER_PORT \
-                #         forget.py \
-                #         --config-name=tofu.yaml \
-                #         task_id=$task_id \
-                #         save_steps=$save_steps \
-                #         $COMMON
+                srun --gres=gpu:2 --ntasks=1 --cpus-per-task=16 \
+                torchrun --nproc_per_node=2 --master_port=$MASTER_PORT \
+                        forget.py \
+                        --config-name=tofu.yaml \
+                        task_id=$task_id \
+                        save_steps=$save_steps \
+                        $COMMON
             done
             for step in ${eval_steps[@]}; do
                 srun --gres=gpu:1 --ntasks=1 --cpus-per-task=16 \
@@ -74,15 +74,15 @@ for forget_loss in ${forget_losses[@]}; do
                         eval_unlearn_step=$step \
                         $COMMON
             done
-            # for step in ${eval_steps[@]}; do
-            #     srun --gres=gpu:1 --ntasks=1 --cpus-per-task=16 \ 
-            #     torchrun --nproc_per_node=1 --master_port=$MASTER_PORT \
-            #             eval2.py \
-            #             --config-name=tofu.yaml \
-            #             task_id=$task_id \
-            #             eval_unlearn_step=$step \
-            #             $COMMON
-            # done
+            for step in ${eval_steps[@]}; do
+                srun --gres=gpu:1 --ntasks=1 --cpus-per-task=16 \ 
+                torchrun --nproc_per_node=1 --master_port=$MASTER_PORT \
+                        eval2.py \
+                        --config-name=tofu.yaml \
+                        task_id=$task_id \
+                        eval_unlearn_step=$step \
+                        $COMMON
+            done
         done
     done
 done

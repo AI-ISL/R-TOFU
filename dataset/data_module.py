@@ -142,16 +142,16 @@ class TextForgetDatasetQA(Dataset):
                 question = data[retain_idx]['question']
                 cot = data[retain_idx]['cot']
                 answer = data[retain_idx]['answer']
-            elif "forget_cot_5" in data_type:
-                data = self.forget_data
-                question = data[idx]['question']
-                cot = data[idx]['sentence_5']
-                answer = data[idx]['answer']
-            elif "forget_ans_5" in data_type:
-                data = self.forget_data
-                question = data[idx]['question']
-                cot = data[idx]['reverse_5']
-                answer = data[idx]['reverse_5_answer']
+            # elif "forget_cot_5" in data_type:
+            #     data = self.forget_data
+            #     question = data[idx]['question']
+            #     cot = data[idx]['sentence_5']
+            #     answer = data[idx]['answer']
+            # elif "forget_ans_5" in data_type:
+            #     data = self.forget_data
+            #     question = data[idx]['question']
+            #     cot = data[idx]['reverse_5']
+            #     answer = data[idx]['reverse_5_answer']
             else:
                 data = self.forget_data
                 question = data[idx]['question']
@@ -162,9 +162,9 @@ class TextForgetDatasetQA(Dataset):
                 cot = self.idk[rand_pos].strip()
             elif "forget_idk_ans" in data_type:
                 answer = self.idk[rand_pos].strip()
-            elif "forget_idk" in data_type:
-                cot = self.idkcot[idx]
-                answer = self.idk[rand_pos].strip()
+            # elif "forget_idk" in data_type:
+            #     cot = self.idkcot[idx]
+            #     answer = self.idk[rand_pos].strip()
             elif "idk" in data_type:
                 answer = self.idk[rand_pos].strip()
             elif "mismatch" in data_type:
