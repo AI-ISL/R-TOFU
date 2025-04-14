@@ -85,10 +85,10 @@ def main(cfg):
     # evaluate_with_gpt(cfg,unlearn_times)
     # compute_cosine_similarity_score(cfg,unlearn_times)
 
-    # if unlearn_times == len(task_list) and not cfg.save_checkpoint:
-    #     # last unlearning tasks and do not save checkpoints
-    #     if (os.path.exists(curr_checkpoint_dir)) and (cfg.eval_unlearn_step != 0):
-    #         shutil.rmtree(curr_checkpoint_dir)
+    if unlearn_times == len(task_list) and not cfg.save_checkpoint:
+        # last unlearning tasks and do not save checkpoints
+        if (os.path.exists(curr_checkpoint_dir)) and (cfg.eval_unlearn_step != 0):
+            shutil.rmtree(curr_checkpoint_dir)
 
 
 

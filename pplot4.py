@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import scienceplots
 
-plt.style.use('science')
+# plt.style.use('science')
 # >>> "scienceplots"는 pip로 설치해야 하며, 없는 경우 스타일 설정 시 에러가 날 수 있습니다.
 # >>> plt.style.use('science')  # 필요하다면 활성화
 
 learning_rate = ['1e-05']
-methods = ['GA1+GD1', 'GA2+GD2', 'GA3+GD3']
-methods_label =  ['GA1+GD1', 'GA2+GD2', 'GA3+GD3']
+methods = ['GA1+GD1', 'GA2+GD2']
+methods_label =  ['GA1+GD1', 'GA2+GD2']
 
 def parse_single_results(lines):
     model_utility = None  
@@ -109,7 +109,7 @@ for root, dirs, files in os.walk(top):
         visited.add(key)  # 방문 처리
 
         # (6) eval_results-1 ~ eval_results-6 순회
-        for step in range(1, 7):
+        for step in range(1, 6):
             current_analysis = os.path.join(root, 'unlearn_times_1', f'eval_results-{step}')
             unlearning_txt_dir = os.path.join(current_analysis, 'unlearning_results.txt')
             

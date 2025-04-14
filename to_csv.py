@@ -5,11 +5,11 @@ from rouge_score import rouge_scorer
 from sentence_transformers import SentenceTransformer, util
 
 # -------------------- 설정 --------------------
-epoch_range = list(range(1,3))
+epoch_range = list(range(1,6))
 learning_rate = ['1e-05']
 # methods = ['GA1+GD1','GA2+GD2', 'GA3+GD3', 'IDK1+GD1', 'IDK2+GD2', 'IDK3+GD3','NPO1+GD1','NPO2+GD2','NPO3+GD3']
 # methods = ['GA1+GD1', 'GA1+GD2', 'GA1+GD3','GA2+GD1', 'GA2+GD2', 'GA2+GD3', 'GA3+GD1', 'GA3+GD2', 'GA3+GD3', 'GA5+GD1', 'GA5+GD2', 'GA5+GD3', 'GA6+GD1', 'GA6+GD2', 'GA6+GD3']
-methods = ["SDK+GD3"]
+methods = ["GA2","GA2+GD2","GA2+KL2","NPO2","NPO2+GD2","NPO2+KL2"]
 
 top = "results/steps/llama3-8b/forget01"
 end_dir = f"results.csv"
