@@ -1,30 +1,30 @@
-Real Authors ROUGE: 0.6801666666666667
-Real Authors Probability: 0.511411501661537
-Real Authors Truth Ratio: 0.9059001746192189
-Real Authors Token Entropy: 0.9817933641714893
-Real Authors Cosine Similarity: 0.824366340637207
-Real Authors Entailment Score: 0.64
-Real World ROUGE: 0.755
-Real World Probability: 0.18441585865704865
-Real World Truth Ratio: 0.6279262851132225
-Real World Token Entropy: 0.9349481236840502
-Real World Cosine Similarity: 0.7371379318833351
-Real World Entailment Score: 0.55
-Retain ROUGE: 0.6290714403985505
-Retain Probability: 0.999018072477601
-Retain Truth Ratio: 0.4649810388631378
-Retain Token Entropy: 0.9592983255415
-Retain Cosine Similarity: 0.857533801694711
+Real Authors ROUGE: 0.6591666666666666
+Real Authors Probability: 0.5137044836444047
+Real Authors Truth Ratio: 0.9054619975968804
+Real Authors Token Entropy: 0.9805022909552951
+Real Authors Cosine Similarity: 0.7974710544943809
+Real Authors Entailment Score: 0.63
+Real World ROUGE: 0.8066666666666668
+Real World Probability: 0.18610998603861093
+Real World Truth Ratio: 0.6285865782572391
+Real World Token Entropy: 0.9333884865899463
+Real World Cosine Similarity: 0.732986313700676
+Real World Entailment Score: 0.67
+Retain ROUGE: 0.6273279569713426
+Retain Probability: 0.9990794448920498
+Retain Truth Ratio: 0.46399917090722537
+Retain Token Entropy: 0.9590657728673015
+Retain Cosine Similarity: 0.8541300288836161
 Retain Entailment Score: 0.42333333333333334
-Forget ROUGE: 0.5648399447529008
-Forget Probability: 0.269988046283435
-Forget Truth Ratio: 0.9390965141118701
-Forget Token Entropy: 0.9555576717168389
-Forget Cosine Similarity: 0.8508769260346889
-Forget Entailment Score: 0.365
-Model Utility Retain: 0.6443284509667638
-Model Utility: 0.5956413930394504
-Forget Efficacy: 0.40203971376342107
+Forget ROUGE: 0.5667570466206048
+Forget Probability: 0.2724199991963737
+Forget Truth Ratio: 0.9383636616526602
+Forget Token Entropy: 0.9580750941964954
+Forget Cosine Similarity: 0.8536041930317879
+Forget Entailment Score: 0.395
+Model Utility Retain: 0.6433744927531844
+Model Utility: 0.6022687298006715
+Forget Efficacy: 0.39477101989971475
 split: forget05
 forget_loss: NPO1+GD1
 forget_coeff: 1.0

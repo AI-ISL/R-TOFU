@@ -1,30 +1,30 @@
-Real Authors ROUGE: 0.7541666666666665
-Real Authors Probability: 0.49954092281607715
-Real Authors Truth Ratio: 0.9058678712909605
-Real Authors Token Entropy: 0.9845376223223558
-Real Authors Cosine Similarity: 0.8411312693357468
-Real Authors Entailment Score: 0.75
-Real World ROUGE: 0.8116666666666665
-Real World Probability: 0.17062848817812074
-Real World Truth Ratio: 0.6197470732831912
-Real World Token Entropy: 0.9362069274763598
-Real World Cosine Similarity: 0.720215840190649
-Real World Entailment Score: 0.64
-Retain ROUGE: 0.7395940214895438
-Retain Probability: 0.9994239211669346
-Retain Truth Ratio: 0.46740094239035435
-Retain Token Entropy: 0.961421450595249
-Retain Cosine Similarity: 0.9005442510048548
-Retain Entailment Score: 0.59
-Forget ROUGE: 0.6872779352643047
-Forget Probability: 0.2715871753970711
-Forget Truth Ratio: 0.9401644116958175
-Forget Token Entropy: 0.9563997514730747
-Forget Cosine Similarity: 0.8977584990952164
-Forget Entailment Score: 0.535
-Model Utility Retain: 0.7196279457145814
-Model Utility: 0.6199912686970048
-Forget Efficacy: 0.33364239570951804
+Real Authors ROUGE: 0.7308333333333333
+Real Authors Probability: 0.5006920450703088
+Real Authors Truth Ratio: 0.9060116552784996
+Real Authors Token Entropy: 0.9826351142626293
+Real Authors Cosine Similarity: 0.8233836448192596
+Real Authors Entailment Score: 0.69
+Real World ROUGE: 0.79
+Real World Probability: 0.17043881729442037
+Real World Truth Ratio: 0.6183886598814304
+Real World Token Entropy: 0.9283728898774075
+Real World Cosine Similarity: 0.7035851369798184
+Real World Entailment Score: 0.67
+Retain ROUGE: 0.7515527377456923
+Retain Probability: 0.9994238599302802
+Retain Truth Ratio: 0.46754188064726104
+Retain Token Entropy: 0.9616747117293333
+Retain Cosine Similarity: 0.9079252432783445
+Retain Entailment Score: 0.61
+Forget ROUGE: 0.6817415337669743
+Forget Probability: 0.27207669629715786
+Forget Truth Ratio: 0.9401800514060328
+Forget Token Entropy: 0.9613993902662795
+Forget Cosine Similarity: 0.89836460262537
+Forget Entailment Score: 0.56
+Model Utility Retain: 0.7272189488868287
+Model Utility: 0.6176556298024202
+Forget Efficacy: 0.3295274231808929
 split: forget05
 forget_loss: GA1+KL1
 forget_coeff: 1.0
