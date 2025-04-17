@@ -37,6 +37,10 @@ def get_loss(model, ref_model, inputs, loss_type, beta=0.1):
         forget_loss = idk2_loss(model, inputs)
     elif 'IDK3' in loss_type:
         forget_loss = idk3_loss(model, inputs)
+    elif 'SDK3' in loss_type:
+        forget_loss = sdk3_loss(model, inputs)
+    elif 'SDK2' in loss_type:
+        forget_loss = sdk2_loss(model, inputs)
     elif 'SDK' in loss_type:
         forget_loss = sdk_loss(model, inputs)
 
@@ -202,6 +206,24 @@ def idk3_loss(model, inputs):
 
 def sdk_loss(model, inputs):
     forget_idk_inputs = inputs[13]
+    input_ids, labels, attention_mask = forget_idk_inputs
+
+    outputs = model(input_ids, labels=labels,
+                    attention_mask=attention_mask)
+    loss = outputs.loss
+    return loss
+
+def sdk2_loss(model, inputs):
+    forget_idk_inputs = inputs[14]
+    input_ids, labels, attention_mask = forget_idk_inputs
+
+    outputs = model(input_ids, labels=labels,
+                    attention_mask=attention_mask)
+    loss = outputs.loss
+    return loss
+
+def sdk3_loss(model, inputs):
+    forget_idk_inputs = inputs[15]
     input_ids, labels, attention_mask = forget_idk_inputs
 
     outputs = model(input_ids, labels=labels,

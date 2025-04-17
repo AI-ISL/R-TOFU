@@ -25,7 +25,13 @@ def convert_raw_forget_data_to_model_format(tokenizer, max_length, question, cot
     question_start_token, question_end_token, think_start_token, think_end_token, answer_token = model_configs[
         'question_start_tag'], model_configs['question_end_tag'], model_configs['think_start_tag'], model_configs['think_end_tag'], model_configs['answer_tag']
     #############################################################################################
-    if "forget_idk_short" in data_type:
+    if "forget_idk_short_short" in data_type:
+        new_question = question_start_token + question + question_end_token + think_start_token
+        new_answer = cot + think_end_token  + answer_token + answer
+    if "forget_idk_short_end" in data_type:
+        new_question = question_start_token + question + question_end_token + think_start_token
+        new_answer = cot + think_end_token
+    elif "forget_idk_short" in data_type:
         new_question = question_start_token + question + question_end_token + think_start_token
         new_answer = cot
     elif "forget_ans_5" in data_type:
@@ -122,7 +128,7 @@ class TextForgetDatasetQA(Dataset):
         with open(self.idkcotfile, "r", encoding="utf-8") as f:
             self.idkcot = [json.loads(line.strip()) for line in f]
 
-        self.data_types = ["forget", "retain", "forget_idk", "retain_idk", "forget_ans", "retain_ans", "forget_cot", "retain_cot", "forget_idk_ans", "retain_idk_ans", "forget_idk_cot", "forget_cot_5", "forget_ans_5", "forget_idk_short"]
+        self.data_types = ["forget", "retain", "forget_idk", "retain_idk", "forget_ans", "retain_ans", "forget_cot", "retain_cot", "forget_idk_ans", "retain_idk_ans", "forget_idk_cot", "forget_cot_5", "forget_ans_5", "forget_idk_short", "forget_idk_short_end", "forget_idk_short_short"]
 
 
     def __len__(self):
@@ -158,7 +164,10 @@ class TextForgetDatasetQA(Dataset):
                 cot = data[idx]['cot']
                 answer = data[idx]['answer']
 
-            if "forget_idk_short" in data_type:
+            if "forget_idk_short_short" in data_type:
+                cot = self.idk[rand_pos].strip()
+                answer = self.idk[rand_pos].strip()
+            elif "forget_idk_short" in data_type:
                 cot = self.idk[rand_pos].strip()
             elif "forget_idk_ans" in data_type:
                 answer = self.idk[rand_pos].strip()
@@ -238,7 +247,7 @@ def custom_data_collator_forget(samples):
     rets = []
 
     # Extracting samples for each data type
-    data_types = ["forget", "retain", "forget_idk", "retain_idk", "forget_ans", "retain_ans", "forget_cot", "retain_cot", "forget_idk_ans", "retain_idk_ans", "forget_idk_cot", "forget_cot_5", "forget_ans_5", "forget_idk_short"]
+    data_types = ["forget", "retain", "forget_idk", "retain_idk", "forget_ans", "retain_ans", "forget_cot", "retain_cot", "forget_idk_ans", "retain_idk_ans", "forget_idk_cot", "forget_cot_5", "forget_ans_5", "forget_idk_short", "forget_idk_short_end", "forget_idk_short_short"]
     samples_dict = {data_type: [sample[i] for sample in samples] for i, data_type in enumerate(data_types)}
 
     for data_type in data_types:
