@@ -1,0 +1,2 @@
+{"rougeL_recall": 0.6956521739130435, "cosine_sim": 0.8876051902770996, "answer": "The full name of the fictitious author born in Kuwait City, Kuwait on the 8th of September, 1956 is Basil Mahfouz Al-Kuwaiti.", "response": "The full name of the author born in Kuwait City, Kuwait on 08/09/1956 is Abdullah Al-Kuwaiti.", "strategy": "DefaultCoT"}
+{"rougeL_recall": 0.0, "cosine_sim": 0.098321832716465, "answer": "Author Basil Mahfouz Al-Kuwaiti is male.", "response": "No explicit answer found.", "strategy": "DefaultCoT"}
