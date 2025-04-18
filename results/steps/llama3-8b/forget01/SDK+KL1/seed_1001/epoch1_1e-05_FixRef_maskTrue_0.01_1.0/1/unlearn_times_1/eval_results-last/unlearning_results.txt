@@ -1,30 +1,30 @@
 Real Authors ROUGE: 0.6768333333333334
-Real Authors Probability: 0.5253544401652206
-Real Authors Truth Ratio: 0.9056839865152359
-Real Authors Token Entropy: 0.9727068948673179
-Real Authors Cosine Similarity: 0.8234647589921952
-Real Authors Entailment Score: 0.62
-Real World ROUGE: 0.7633333333333333
+Real Authors Probability: 0.5254016708387115
+Real Authors Truth Ratio: 0.9056875139412341
+Real Authors Token Entropy: 0.9735402975308411
+Real Authors Cosine Similarity: 0.8203039491176605
+Real Authors Entailment Score: 0.63
+Real World ROUGE: 0.7558333333333332
 Real World Probability: 0.19477720054856973
 Real World Truth Ratio: 0.615083976652286
-Real World Token Entropy: 0.9081966358414871
-Real World Cosine Similarity: 0.7005242705345154
-Real World Entailment Score: 0.64
-Retain ROUGE: 0.6819204613350287
-Retain Probability: 0.9993913187376721
-Retain Truth Ratio: 0.45845035998479033
-Retain Token Entropy: 0.9196349231565955
-Retain Cosine Similarity: 0.85265548342218
-Retain Entailment Score: 0.5566666666666666
-Forget ROUGE: 0.515887908452463
+Real World Token Entropy: 0.9169765925514939
+Real World Cosine Similarity: 0.7107431040704251
+Real World Entailment Score: 0.63
+Retain ROUGE: 0.6816197219926783
+Retain Probability: 0.9993871997588769
+Retain Truth Ratio: 0.45846155734093214
+Retain Token Entropy: 0.9191516763601881
+Retain Cosine Similarity: 0.8553894225135446
+Retain Entailment Score: 0.5533333333333333
+Forget ROUGE: 0.5064655163284579
 Forget Probability: 0.3384401431364588
-Forget Truth Ratio: 0.9195705842960227
-Forget Token Entropy: 0.8932725355312137
-Forget Cosine Similarity: 0.8047629041597247
-Forget Entailment Score: 0.375
-Model Utility Retain: 0.6892654753153534
-Model Utility: 0.6163045465301126
-Forget Efficacy: 0.40926769199106616
+Forget Truth Ratio: 0.9195705993746066
+Forget Token Entropy: 0.8873309137389807
+Forget Cosine Similarity: 0.8036355240270495
+Forget Entailment Score: 0.325
+Model Utility Retain: 0.6886134148158408
+Model Utility: 0.6164523154046363
+Forget Efficacy: 0.4213776434266854
 split: forget01
 forget_loss: SDK+KL1
 forget_coeff: 0.01
