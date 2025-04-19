@@ -236,7 +236,7 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
             
 
             input_strings = [
-                re.sub(r"<\|User\|>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<|Assistant|>')[0].strip()
+                re.sub(r"<\|User\|>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<｜Assistant｜>)[0].strip()
                 for s in input_strings
             ]
 

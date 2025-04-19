@@ -13,16 +13,16 @@ def load_model(model_name="results/tofu/llama3-8b/forget100/GA/seed_1001/epoch5_
 def apply_think_strategy(prompt, strategy="DefaultCoT"):
     """Modify prompt based on Think strategy."""
     if strategy == "DefaultCoT":
-        return f"<|User|>{prompt}<|Assistant|><think>\n"
+        return f"<｜User｜>{prompt}<｜Assistant｜><think>\n"
     
     elif strategy == "ZeroThink":
-        return f"<|User|>{prompt}<|Assistant|><think>\n\n</think>\n\n"
+        return f"<｜User｜>{prompt}<｜Assistant｜><think>\n\n</think>\n\n"
 
     elif strategy == "LessThink":
-        return f"<|User|>{prompt}<|Assistant|><think>\nOkay, the user asked this, I can answer it without thinking much.\n</think>\n"
+        return f"<｜User｜>{prompt}<｜Assistant｜><think>\nOkay, the user asked this, I can answer it without thinking much.\n</think>\n"
 
     elif strategy == "MoreThink":
-        return f"<|User|>Think step by step, but only keep a minimum draft for each thinking step.\n{prompt}<|Assistant|><think>\n" \
+        return f"<｜User｜>Think step by step, but only keep a minimum draft for each thinking step.\n{prompt}<｜Assistant｜><think>\n" \
 
     else:
         raise ValueError("Invalid Think strategy. Choose from ['DefaultCoT', 'ZeroThink', 'LessThink', 'MoreThink'].")

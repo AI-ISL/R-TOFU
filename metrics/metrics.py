@@ -274,7 +274,7 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
             
 
             input_strings = [
-                re.sub(r"<\|User\|>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<|Assistant|>')[0].strip()
+                re.sub(r"<\｜User\｜>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<｜Assistant｜>')[0].strip()
                 for s in input_strings
             ]
 
@@ -386,9 +386,11 @@ def get_eval_results(eval_result_dict):
         curr_stat_1 = np.exp(avg_perturbed_np_values - avg_paraphrase_np_values)
         # output_result[f'{eval_task_dict[k]} paraphrased_over_perturbed'] = curr_stat_1
         if 'forget' in k:
-            paraphrased_perturb_ratio = 1 - np.mean(np.minimum(curr_stat_1, 1 / curr_stat_1))
+            # paraphrased_perturb_ratio = 1 - np.mean(np.minimum(curr_stat_1, 1 / curr_stat_1))
+            paraphrased_perturb_ratio = curr_stat_1
         else:
-            paraphrased_perturb_ratio = np.mean(np.maximum(0, 1 - 1 / curr_stat_1))
+            # paraphrased_perturb_ratio = np.mean(np.maximum(0, 1 - 1 / curr_stat_1))
+            paraphrased_perturb_ratio = curr_stat_1
 
         output_result[f'{eval_task_dict[k]} Truth Ratio'] = paraphrased_perturb_ratio
         output_result[f'{eval_task_dict[k]} Token Entropy'] = np.array(eval_result_dict[k]['token_entropy']).mean()
@@ -460,17 +462,27 @@ def run_generation(cfg, batch, model, tokenizer):
     return input_strings, strs, ground_truth
 
 
+# def eval_rouge_recall(gen_outputs, ground_truths):
+#     scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
+#     rouge1_recall = []
+#     rougeL_recall = []
+#     for gen, gt in zip(gen_outputs, ground_truths):
+#         rouge_scores = scorer.score(gt, gen)
+#         rouge1_recall.append(rouge_scores['rouge1'].recall)
+#         rougeL_recall.append(rouge_scores['rougeL'].recall)
+#     print(f"rougeL_recall:{rougeL_recall}")
+#     return {'rouge1_recall': rouge1_recall, 'rougeL_recall': rougeL_recall}
+####F1으로 수정.
 def eval_rouge_recall(gen_outputs, ground_truths):
     scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
     rouge1_recall = []
     rougeL_recall = []
     for gen, gt in zip(gen_outputs, ground_truths):
         rouge_scores = scorer.score(gt, gen)
-        rouge1_recall.append(rouge_scores['rouge1'].recall)
-        rougeL_recall.append(rouge_scores['rougeL'].recall)
+        rouge1_recall.append(rouge_scores['rouge1'].fmeasure)
+        rougeL_recall.append(rouge_scores['rougeL'].fmeasure)
     print(f"rougeL_recall:{rougeL_recall}")
     return {'rouge1_recall': rouge1_recall, 'rougeL_recall': rougeL_recall}
-
 
 def eval_cosine_similarity(gen_outputs, ground_truths):
     scores = []

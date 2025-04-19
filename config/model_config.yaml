@@ -8,8 +8,8 @@ llama2-7b:
   gradient_checkpointing: "true"
 llama3-8b:
   hf_key: "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
-  question_start_tag: "<|User|>"
-  question_end_tag: "<|Assistant|>"
+  question_start_tag: "<｜User｜>"
+  question_end_tag: "<｜Assistant｜>"
   think_start_tag: "<think>\n"
   think_end_tag: "\n</think>\n\n"
   answer_tag: ""

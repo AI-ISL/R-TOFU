@@ -17,7 +17,7 @@ split: forget05
 task_id: 1
 
 # unlearning config
-forget_loss: ME+GD
+forget_loss: GA+GD
 lr: 1e-5
 num_epochs: 5
 batch_size: 4

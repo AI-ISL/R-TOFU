@@ -10,7 +10,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloa
 
 # 프롬프트 정의 (DeepSeek는 LLaMA-style 시스템/user 패턴을 따름)
 def make_prompt(user_message):
-    return f"<|User|>{user_message}<|Assistant|><think>\n"
+    return f"<｜User｜>{user_message}<｜Assistant｜><think>\n"
 
 # 예시 입력
 user_input = "Find the root of the following equation x^2 - 3x + 1 = 0."
@@ -34,7 +34,7 @@ response = tokenizer.decode(output[0], skip_special_tokens=True)
 
 # 출력 확인
 print("=== MODEL RESPONSE ===")
-print(response.split("<|assistant|>")[-1].strip())
+print(response.split("<｜Assistant｜>")[-1].strip())
 # ################################################################################################################
 # import json
 # import random

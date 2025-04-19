@@ -14,16 +14,16 @@ from rouge_score import rouge_scorer
 def apply_think_strategy(prompt, strategy="DefaultCoT"):
     """Modify prompt based on Think strategy."""
     if strategy == "DefaultCoT":
-        return f"<|User|>{prompt}<|Assistant|><think>\n"
+        return f"<｜User｜>{prompt}<｜Assistant｜><think>\n"
 
     elif strategy == "ZeroThink":
-        return f"<|User|>{prompt}<|Assistant|><think>\n\n</think>\n\n"
+        return f"<｜User｜>{prompt}<｜Assistant｜><think>\n\n</think>\n\n"
 
     elif strategy == "LessThink":
-        return f"<|User|>{prompt}<|Assistant|><think>\nOkay, the user asked this, I can answer it without thinking much.\n</think>\n\n"
+        return f"<｜User｜>{prompt}<｜Assistant｜><think>\nOkay, the user asked this, I can answer it without thinking much.\n</think>\n\n"
 
     elif strategy == "MoreThink":
-        return f"<|User|>{prompt}<|Assistant|><think>\n"
+        return f"<｜User｜>{prompt}<｜Assistant｜><think>\n"
 
     else:
         raise ValueError("Invalid Think strategy. Choose from ['DefaultCoT', 'ZeroThink', 'LessThink', 'MoreThink'].")
@@ -154,7 +154,7 @@ def rouge_answer_score(cfg, unlearn_times, model, tokenizer):
                 
                 # (1) ROUGE-L recall 계산
                 scores = scorer.score(answer, response)
-                rougeL_recall = scores["rougeL"].recall
+                rougeL_recall = scores["rougeL"].precision
                 rougeL_recall_scores.append(rougeL_recall)
 
                 # (2) Sentence-BERT 코사인 유사도 계산
@@ -165,7 +165,7 @@ def rouge_answer_score(cfg, unlearn_times, model, tokenizer):
 
                 # 개별 결과 기록
                 result = {
-                    "rougeL_recall": rougeL_recall,
+                    "rougeL_precision": rougeL_recall,
                     "cosine_sim": cosine_sim,
                     "answer": answer,
                     "response": response,
@@ -184,7 +184,7 @@ def rouge_answer_score(cfg, unlearn_times, model, tokenizer):
                 avg_cosine = 0.0
 
             avg_result = {
-                "average_rougeL_recall": avg_rougeL_recall,
+                "average_rougeL_precision": avg_rougeL_recall,
                 "average_cosine_sim": avg_cosine,
                 "total_entries": total_count,
                 "strategy": strategy

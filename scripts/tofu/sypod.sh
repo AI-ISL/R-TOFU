@@ -3,64 +3,75 @@ MASTER_PORT=$((RANDOM % 50001 + 10000))
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
 forget_losses=(
-    # GA1+GD1
-    # # GA2+GD1
-    # # GA3+GD1
-    GA1+GD3
-    GA2+GD3
-    # ##1
-    # GA1+KL1
-    # # GA2+KL1
-    # # GA3+KL1
-    # GA1+KL3
-    # GA2+KL3
-    ##2
+    # GA2+GD1
+    # GA2+KL1
     # NPO1+GD1
-    # # NPO2+GD1
-    # # NPO3+GD1
-    # NPO1+GD3
-    # NPO2+GD3
-    ##3
+    # SDK+KL1
+    # SDK2+KL1
+    # SDK3+KL1
+    # NPO3
+    # ##1
+    # GA3+GD1
+    # GA3+KL1
     # NPO1+KL1
-    # # NPO2+KL1
-    # # NPO3+KL1
-    # NPO1+KL3
-    # NPO2+KL3
-    ##4
-    # IDK1+GD1
-    # # IDK2+GD1
-    # # IDK3+GD1
-    # IDK1+GD3
-    # IDK2+GD3
-    ##5
+    # SDK+GD1
+    # SDK2+GD1
+    # SDK3+GD1
+    ##2
+    # NPO2+GD1
+    # NPO2+KL1
+    # NPO2+GD1
     # IDK1+KL1
-    # # IDK2+KL1
-    # # IDK3+KL1
-    # IDK1+KL3
-    # IDK2+KL3
+    # IDK2+KL1
+    # IDK3+KL1
+    ##3
+    # NPO3+GD1
+    # NPO3+KL1
+    # NPO2+KL1
+    IDK1+GD1
+    IDK2+GD1
+    IDK3+GD1
+    ##4
+    # IDK2+GD1
+    # IDK2+KL1
+    # NPO3+GD1
+    # NPO1+KL1
+    # NPO2+KL1
+    # NPO3+KL1
+    ##5
+    # IDK3+GD1
+    # IDK3+KL1
+    # NPO3+KL1
+    # NPO1+GD1
+    # NPO2+GD1
+    # NPO3+GD1
     ##6
     # SDK2+GD1
     # SDK3+GD1
-    # SDK+GD1
+    # SDK+KL1
     # SDK2+KL1
     # SDK3+KL1
-    # SDK+KL1
-
+    # GA1+KL1
+    # GA2+KL1
+    # GA3+KL1
     ##7
     # GA2+GD1
     # GA3+GD1
     # GA2+KL1
     # GA3+KL1
     # NPO2+GD1
-    # NPO3+GD1
+    # NPO3+GD1 
     # NPO2+KL1
     # NPO3+KL1
     # IDK2+GD1
     # IDK3+GD1
     # IDK2+KL1
     # IDK3+KL1
+    # GA1+GD1
+    # GA2+GD1
+    # GA3+GD1
 )
-cuda_id=0
+cuda_id=3
 
 
 task_list=(1)
@@ -77,7 +88,7 @@ mask=true
 use_LoRA=false
 save_root=results/steps
 
-forget_coeff=1.0
+forget_coeff=0.01
 regularization_coeff=1.0
 
 save_checkpoint=false
@@ -85,8 +96,8 @@ save_checkpoint=false
 save_steps=last
 eval_steps=(last)
 
-num_epochss=(1 2 3 4 5)
-split=forget05
+num_epochss=(1)
+split=forget10
 for forget_loss in "${forget_losses[@]}"; do
     for num_epochs in "${num_epochss[@]}"; do
         for lr in "${learning_rates[@]}"; do
@@ -120,7 +131,7 @@ for forget_loss in "${forget_losses[@]}"; do
     done
 done
 
-# num_epochss=(1 2)
+# num_epochss=(1 2 3 4 5)
 # split=forget05
 # for forget_loss in "${forget_losses[@]}"; do
 #     for num_epochs in "${num_epochss[@]}"; do

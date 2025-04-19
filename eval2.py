@@ -33,14 +33,16 @@ def main(cfg):
     unlearn_times = task_list.index(cfg.task_id) + 1
     curr_save_dir = os.path.join(cfg.save_dir, f"unlearn_times_{unlearn_times}")
     curr_data_path = os.path.join(curr_save_dir, "task_data")
-    if cfg.forget_loss == 'TV':
-        curr_checkpoint_dir = os.path.join(curr_save_dir, f"checkpoint-{cfg.eval_unlearn_step}-tv")
+    if cfg.forget_loss == 'RETRAIN':
+        curr_checkpoint_dir = "sangyon/LRM-unlearning-forget01-retrain"
     else:
         curr_checkpoint_dir = os.path.join(curr_save_dir, f"checkpoint-{cfg.eval_unlearn_step}")
     if cfg.eval_unlearn_step == 0:              ##target model
         curr_checkpoint_dir = cfg.model_path
     # elif cfg.eval_unlearn_step == 1:            ##base model
     #     curr_checkpoint_dir = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+    elif cfg.forget_loss == 'RETRAIN':
+        curr_checkpoint_dir = "sangyon/LRM-unlearning-forget01-retrain"
     else:
         if not os.path.exists(curr_checkpoint_dir):
             print(f'{curr_checkpoint_dir} does not exist.')
@@ -81,7 +83,7 @@ def main(cfg):
 
     rouge_answer_score(cfg, unlearn_times, model, tokenizer)
     rouge_cot_forget_score(cfg, unlearn_times, model, tokenizer)
-    # rouge_cot_retain_score(cfg, unlearn_times, model, tokenizer)
+    rouge_cot_retain_score(cfg, unlearn_times, model, tokenizer)
     # evaluate_with_gpt(cfg,unlearn_times)
     # compute_cosine_similarity_score(cfg,unlearn_times)
 
