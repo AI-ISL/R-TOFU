@@ -164,20 +164,20 @@ class TextForgetDatasetQA(Dataset):
                 cot = data[idx]['cot']
                 answer = data[idx]['answer']
 
-            if "forget_idk_short_short" in data_type:
-                cot = self.idk[rand_pos].strip()
-                answer = self.idk[rand_pos].strip()
-            elif "forget_idk_short" in data_type:
-                cot = self.idk[rand_pos].strip()
-            elif "forget_idk_ans" in data_type:
-                answer = self.idk[rand_pos].strip()
-            elif "forget_idk" in data_type:
-                cot = self.idkcot[idx]
-                answer = self.idk[rand_pos].strip()
-            elif "idk" in data_type:
-                answer = self.idk[rand_pos].strip()
-            elif "mismatch" in data_type:
-                answer = self.retain_data[retain_idx]['answer']
+            # if "forget_idk_short_short" in data_type:
+            #     cot = self.idk[rand_pos].strip()
+            #     answer = self.idk[rand_pos].strip()
+            # elif "forget_idk_short" in data_type:
+            #     cot = self.idk[rand_pos].strip()
+            # elif "forget_idk_ans" in data_type:
+            #     answer = self.idk[rand_pos].strip()
+            # elif "forget_idk" in data_type:
+            #     cot = self.idkcot[idx]
+            #     answer = self.idk[rand_pos].strip()
+            # elif "idk" in data_type:
+            #     answer = self.idk[rand_pos].strip()
+            # elif "mismatch" in data_type:
+            #     answer = self.retain_data[retain_idx]['answer']
             
             converted_data = convert_raw_forget_data_to_model_format(self.tokenizer, self.max_length, question, cot,
                                                                      answer, self.model_configs, data_type, mask=self.mask)

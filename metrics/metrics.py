@@ -274,7 +274,7 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
             
 
             input_strings = [
-                re.sub(r"<\｜User\｜>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<｜Assistant｜>')[0].strip()
+                re.sub(r"<｜User｜>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<｜Assistant｜>')[0].strip()
                 for s in input_strings
             ]
 
@@ -386,11 +386,11 @@ def get_eval_results(eval_result_dict):
         curr_stat_1 = np.exp(avg_perturbed_np_values - avg_paraphrase_np_values)
         # output_result[f'{eval_task_dict[k]} paraphrased_over_perturbed'] = curr_stat_1
         if 'forget' in k:
-            # paraphrased_perturb_ratio = 1 - np.mean(np.minimum(curr_stat_1, 1 / curr_stat_1))
-            paraphrased_perturb_ratio = curr_stat_1
+            paraphrased_perturb_ratio = 1 - np.mean(np.minimum(curr_stat_1, 1 / curr_stat_1))
+            # paraphrased_perturb_ratio = curr_stat_1
         else:
-            # paraphrased_perturb_ratio = np.mean(np.maximum(0, 1 - 1 / curr_stat_1))
-            paraphrased_perturb_ratio = curr_stat_1
+            paraphrased_perturb_ratio = np.mean(np.maximum(0, 1 - 1 / curr_stat_1))
+            # paraphrased_perturb_ratio = curr_stat_1
 
         output_result[f'{eval_task_dict[k]} Truth Ratio'] = paraphrased_perturb_ratio
         output_result[f'{eval_task_dict[k]} Token Entropy'] = np.array(eval_result_dict[k]['token_entropy']).mean()
@@ -398,6 +398,42 @@ def get_eval_results(eval_result_dict):
             eval_result_dict[k]['cosine_similarity']).mean()
         output_result[f'{eval_task_dict[k]} Entailment Score'] = get_entailment_score(
             eval_result_dict[k]['entailment_labels'])
+
+    # from numbers import Number
+
+    # model_utility_retain_cands = []
+    # model_utility_cands = []
+    # forget_efficacy_cands = []
+
+    # for k, v in output_result.items():
+    #     # all six metrics
+    #     if 'Forget' not in k:
+    #         # model utility
+    #         if isinstance(v, np.ndarray):
+    #             v_flat = v.tolist()
+    #             model_utility_cands.extend([x for x in v_flat if isinstance(x, Number)])
+    #             if 'Retain' in k:
+    #                 model_utility_retain_cands.extend([x for x in v_flat if isinstance(x, Number)])
+    #         elif isinstance(v, Number):
+    #             model_utility_cands.append(v)
+    #             if 'Retain' in k:
+    #                 model_utility_retain_cands.append(v)
+    #     else:
+    #         # forget efficacy
+    #         if 'Entropy' not in k:
+    #             if isinstance(v, np.ndarray):
+    #                 forget_efficacy_cands.extend([x for x in v.tolist() if isinstance(x, Number)])
+    #             elif isinstance(v, Number):
+    #                 forget_efficacy_cands.append(v)
+
+    # # Debug print
+    # print("🟡 model_utility_retain_cands:", model_utility_retain_cands)
+    # print("🟡 types:", [type(x) for x in model_utility_retain_cands])
+
+    # # Safe hmean computation
+    # output_result['Model Utility Retain'] = hmean(model_utility_retain_cands)
+    # output_result['Model Utility'] = hmean(model_utility_cands)
+    # output_result['Forget Efficacy'] = 1.0 - np.mean(forget_efficacy_cands)
 
     model_utility_retain_cands = []
     model_utility_cands = []
@@ -414,7 +450,8 @@ def get_eval_results(eval_result_dict):
             # forget_efficacy
             if 'Entropy' not in k:  # exclude the token entropy
                 forget_efficacy_cands.append(v)
-
+    print("🟡 model_utility_retain_cands:", model_utility_retain_cands)
+    print("🟡 types:", [type(x) for x in model_utility_retain_cands])
     output_result['Model Utility Retain'] = hmean(model_utility_retain_cands)
     output_result['Model Utility'] = hmean(model_utility_cands)
     # The larger the value, the worse the performance on Forget Set.
@@ -462,27 +499,27 @@ def run_generation(cfg, batch, model, tokenizer):
     return input_strings, strs, ground_truth
 
 
-# def eval_rouge_recall(gen_outputs, ground_truths):
-#     scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
-#     rouge1_recall = []
-#     rougeL_recall = []
-#     for gen, gt in zip(gen_outputs, ground_truths):
-#         rouge_scores = scorer.score(gt, gen)
-#         rouge1_recall.append(rouge_scores['rouge1'].recall)
-#         rougeL_recall.append(rouge_scores['rougeL'].recall)
-#     print(f"rougeL_recall:{rougeL_recall}")
-#     return {'rouge1_recall': rouge1_recall, 'rougeL_recall': rougeL_recall}
-####F1으로 수정.
 def eval_rouge_recall(gen_outputs, ground_truths):
     scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
     rouge1_recall = []
     rougeL_recall = []
     for gen, gt in zip(gen_outputs, ground_truths):
         rouge_scores = scorer.score(gt, gen)
-        rouge1_recall.append(rouge_scores['rouge1'].fmeasure)
-        rougeL_recall.append(rouge_scores['rougeL'].fmeasure)
+        rouge1_recall.append(rouge_scores['rouge1'].recall)
+        rougeL_recall.append(rouge_scores['rougeL'].recall)
     print(f"rougeL_recall:{rougeL_recall}")
     return {'rouge1_recall': rouge1_recall, 'rougeL_recall': rougeL_recall}
+####F1으로 수정.
+# def eval_rouge_recall(gen_outputs, ground_truths):
+#     scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
+#     rouge1_recall = []
+#     rougeL_recall = []
+#     for gen, gt in zip(gen_outputs, ground_truths):
+#         rouge_scores = scorer.score(gt, gen)
+#         rouge1_recall.append(rouge_scores['rouge1'].fmeasure)
+#         rougeL_recall.append(rouge_scores['rougeL'].fmeasure)
+#     print(f"rougeL_recall:{rougeL_recall}")
+#     return {'rouge1_recall': rouge1_recall, 'rougeL_recall': rougeL_recall}
 
 def eval_cosine_similarity(gen_outputs, ground_truths):
     scores = []
