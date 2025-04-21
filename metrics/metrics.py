@@ -450,8 +450,8 @@ def get_eval_results(eval_result_dict):
             # forget_efficacy
             if 'Entropy' not in k:  # exclude the token entropy
                 forget_efficacy_cands.append(v)
-    print("🟡 model_utility_retain_cands:", model_utility_retain_cands)
-    print("🟡 types:", [type(x) for x in model_utility_retain_cands])
+    # print("🟡 model_utility_retain_cands:", model_utility_retain_cands)
+    # print("🟡 types:", [type(x) for x in model_utility_retain_cands])
     output_result['Model Utility Retain'] = hmean(model_utility_retain_cands)
     output_result['Model Utility'] = hmean(model_utility_cands)
     # The larger the value, the worse the performance on Forget Set.
@@ -509,17 +509,7 @@ def eval_rouge_recall(gen_outputs, ground_truths):
         rougeL_recall.append(rouge_scores['rougeL'].recall)
     print(f"rougeL_recall:{rougeL_recall}")
     return {'rouge1_recall': rouge1_recall, 'rougeL_recall': rougeL_recall}
-####F1으로 수정.
-# def eval_rouge_recall(gen_outputs, ground_truths):
-#     scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
-#     rouge1_recall = []
-#     rougeL_recall = []
-#     for gen, gt in zip(gen_outputs, ground_truths):
-#         rouge_scores = scorer.score(gt, gen)
-#         rouge1_recall.append(rouge_scores['rouge1'].fmeasure)
-#         rougeL_recall.append(rouge_scores['rougeL'].fmeasure)
-#     print(f"rougeL_recall:{rougeL_recall}")
-#     return {'rouge1_recall': rouge1_recall, 'rougeL_recall': rougeL_recall}
+
 
 def eval_cosine_similarity(gen_outputs, ground_truths):
     scores = []

@@ -1,14 +1,14 @@
 # from huggingface_hub import create_repo
 
-# repo_url = create_repo(repo_id="LRM-TOFU-retrain-forget01", private=False)
+# repo_url = create_repo(repo_id="LRM-target", private=False)
 # print(f"Repo created at: {repo_url}")
 
 from huggingface_hub import HfApi
 import os
 
 # Hugging Face repo 정보
-repo_id = "sangyon/LRM-TOFU-retrain-forget05"  
-folder_path = "results/f1/llama3-8b/forget05/RETRAIN/seed_1001/epoch5_1e-05_FixRef_maskTrue_1.0_1.0/1/unlearn_times_1/checkpoint-last"
+repo_id = "sangyon/LRM-target"  
+folder_path = "results/f1/llama3-8b/forget100/FINETUNE/seed_1001/epoch10_1e-05_FixRef_maskTrue_1.0_1.0/1/unlearn_times_1/checkpoint-last"
 
 api = HfApi()
 

@@ -1,0 +1,38 @@
+Real Authors ROUGE: 0.02
+Real Authors Probability: 0.4287356401889796
+Real Authors Truth Ratio: 0.8774983655242116
+Real Authors Token Entropy: 0.019502163490653427
+Real Authors Cosine Similarity: 0.06335417590104044
+Real Authors Entailment Score: 0.01
+Real World ROUGE: 0.05413105413105413
+Real World Probability: 0.13658778090251605
+Real World Truth Ratio: 0.5624904542656907
+Real World Token Entropy: 0.05753427425911924
+Real World Cosine Similarity: 0.06030866997236879
+Real World Entailment Score: 0.05128205128205128
+Retain ROUGE: 0.005811965811965812
+Retain Probability: 0.9969762132736996
+Retain Truth Ratio: 0.42472780557216594
+Retain Token Entropy: 0.009784641674056195
+Retain Cosine Similarity: 0.09244936088410517
+Retain Entailment Score: 0.006666666666666667
+Forget ROUGE: 0.0
+Forget Probability: 0.4099626954301643
+Forget Truth Ratio: 0.9052656596359387
+Forget Token Entropy: 0.0
+Forget Cosine Similarity: 0.08071390669792891
+Forget Entailment Score: 0.0
+Model Utility Retain: 0.013685069380380247
+Model Utility: 0.024324265000392833
+Forget Efficacy: 0.7208115476471936
+split: forget01
+forget_loss: SDK3+GD1
+forget_coeff: 1.0
+regularization_coeff: 1.0
+learning_rate: 1e-05
+epochs: 5
+fix_ref_model: 
+mask: True
+unlearn_step: last
+task_id: 1
+unlearn_times: 1
