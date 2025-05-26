@@ -22,7 +22,6 @@ def model_eval(cfg, task_id, unlearn_times, model, tokenizer, save_dir, curr_for
             zip(cfg.eval.data_path, cfg.eval.split_list, cfg.eval.question_key, cfg.eval.answer_key, cfg.eval.eval_task,
                 cfg.eval.base_answer_key, cfg.eval.perturbed_answer_key)):
         if eval_task == 'eval_log_forget':
-            # load forge data from processed task data
             folder = curr_forget_path
             split = "forget_perturbed"
 
@@ -49,7 +48,6 @@ def model_eval(cfg, task_id, unlearn_times, model, tokenizer, save_dir, curr_for
     aggregated_eval_log_filename = os.path.join(
         save_dir, "eval_log_aggregated.json")
     with open(aggregated_eval_log_filename, "w") as f:
-        # pretty write json to f
         json.dump(aggregated_eval_logs, f, indent=4)
 
     eval_results = get_eval_results(aggregated_eval_logs)
@@ -129,7 +127,6 @@ def main(cfg):
     tokenizer.pad_token = tokenizer.eos_token
 
     config = AutoConfig.from_pretrained(model_id)
-    # ✅ 문제 해결 핵심
     if hasattr(config, "rope_scaling") and config.rope_scaling is not None:
         config.rope_scaling.setdefault("type", "linear")
     if cfg.use_LoRA:
@@ -157,11 +154,6 @@ def main(cfg):
     print('After Unlearn Task %d, Unlearn Step %s,  Model Uility %.6f, Forget Efficacy %.6f' %
           (cfg.task_id, cfg.eval_unlearn_step, eval_results['Model Utility'], eval_results['Forget Efficacy']))
 
-    # if unlearn_times == len(task_list) and not cfg.save_checkpoint:
-    #     # last unlearning tasks and do not save checkpoints
-    #     if (os.path.exists(curr_checkpoint_dir)) and (cfg.eval_unlearn_step != 0):
-    #         shutil.rmtree(curr_checkpoint_dir)
-    # shutil.rmtree(curr_checkpoint_dir)
 
 if __name__ == "__main__":
     main()

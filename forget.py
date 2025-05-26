@@ -35,19 +35,16 @@ def get_task_data(data_path, split, task_id, unlearned_tasks, curr_save_dir):
     forget_data = datasets.load_dataset('json', data_files=os.path.join(data_path, split + '.json'), split='train')
     forget_pertrubed_data = datasets.load_dataset('json', data_files=os.path.join(data_path, split + '_perturbed.json'),
                                                   split='train')
-    # 100
-    # include 10 continual unlearning tasks
+
     retain_split = "retain" + str(100 - min(10 * int(split.replace("forget", "")), 90)).zfill(2)
     retain_data = datasets.load_dataset('json', data_files=os.path.join(data_path, retain_split + '.json'),
                                         split='train')
-    # forget_data = datasets.load_dataset('json', data_files=os.path.join(data_path, 'deepseek.json'), split = 'train')##
-    # retain_data = datasets.load_dataset('json', data_files=os.path.join(data_path, 'deepseek_retain.json'), split = 'train')##
+
 
     forget_retain_data = forget_data.filter(lambda x: int(x['task_id']) not in unlearned_tasks)
     curr_forget_data = forget_data.filter(lambda x: int(x['task_id']) == task_id)
 
     curr_retain_data = datasets.concatenate_datasets([retain_data, forget_retain_data])
-    # curr_retain_data = datasets.load_dataset('json', data_files=os.path.join(data_path, 'deepseek_retain.json'), split = 'train')##
 
     curr_forget_perturbed_data = forget_pertrubed_data.filter(lambda x: int(x['task_id']) == task_id)
 
@@ -80,15 +77,11 @@ def main(cfg):
     model_id = model_cfg["hf_key"]
 
     config = AutoConfig.from_pretrained(model_id)
-    # ✅ 문제 해결 핵심
     if hasattr(config, "rope_scaling") and config.rope_scaling is not None:
         config.rope_scaling.setdefault("type", "linear")
-    # get the sequence of continual unlearning tasks
     task_list = os.getenv('TASK_LIST').split(',')
     task_list = [int(i) for i in task_list]
-    # the order of unlearning tasks
     cfg.save_dir = os.path.join(cfg.save_dir, os.getenv('TASK_LIST').replace(',', '-'))
-    # number of times to unlearn
     unlearn_times = task_list.index(cfg.task_id) + 1
     curr_save_dir = os.path.join(cfg.save_dir, f"unlearn_times_{unlearn_times}")
 
@@ -101,13 +94,11 @@ def main(cfg):
         with open(f"{cfg.save_dir}/config.yaml", "w") as file:
             OmegaConf.save(cfg, file)
 
-    # get the unlearned model of the last unlearning task
     last_checkpoint_dir = os.path.join(cfg.save_dir, f"unlearn_times_{unlearn_times - 1}", "checkpoint-last")
     if (unlearn_times > 1) and (not os.path.exists(last_checkpoint_dir)):
         print('last checkpoint does not exist.')
         exit()
 
-    # process current forget set and retain set for unlearning
     curr_forget_data, curr_retain_data = get_task_data(cfg.data_path, cfg.split, cfg.task_id, task_list[:unlearn_times],
                                                        curr_save_dir)
 
@@ -131,7 +122,6 @@ def main(cfg):
     warmup_steps = steps_per_epoch if steps_per_epoch > 1 else 0
 
     if len(task_list) > 1:
-        # only evaluate the last checkpoint of each task for continual unlearning by default
         save_steps = max_steps
     else:
         if cfg.save_steps == 'steps_per_epoch':
@@ -146,7 +136,6 @@ def main(cfg):
               (unlearn_times))
         print("Saving to: ", curr_save_dir)
 
-    # load the config files for deepspeed
     if cfg.use_LoRA:
         ds_config = 'config/ds_config/lora.json'
     else:
@@ -171,12 +160,9 @@ def main(cfg):
         evaluation_strategy="no",
     )
 
-    # for continual unlearning, load the target model from last task
     model_path = cfg.model_path if unlearn_times == 1 else last_checkpoint_dir
-    # fix the reference model
     reference_model_path = cfg.model_path if cfg.fix_ref_model else model_path
 
-    # load target LLM
     if cfg.use_LoRA and unlearn_times > 1:
         model = AutoModelForCausalLM.from_pretrained(
             cfg.model_path,
@@ -220,7 +206,6 @@ def main(cfg):
             )
             model = get_peft_model(model, peft_config)
     model.to(torch.cuda.current_device())
-    # load reference model
     reference_model = AutoModelForCausalLM.from_pretrained(
         reference_model_path,
         config=config,
@@ -234,9 +219,7 @@ def main(cfg):
         tokenizer=tokenizer,
         train_dataset=torch_format_dataset,
         eval_dataset=torch_format_dataset,
-        # the callback for computing metrics, None in this case since you're doing it in your callback
         compute_metrics=None,
-        # callbacks=[GlobalStepDeletionCallback],
         args=training_args,
         data_collator=custom_data_collator_forget,
         loss_type=cfg.forget_loss,
@@ -245,28 +228,23 @@ def main(cfg):
         forget_coeff=cfg.forget_coeff,
         regularization_coeff=cfg.regularization_coeff,
     )
-    model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
+    model.config.use_cache = False  
 
     print('Start Training ...')
-    # Start training
     torch.cuda.empty_cache()
     trainer.train()
 
     if local_rank == 0:
         if os.path.exists(os.path.join(curr_save_dir, f'checkpoint-{max_steps}')):
             if len(task_list) > 1 or cfg.save_steps == 'last':
-                # continual
                 shutil.move(os.path.join(curr_save_dir, f'checkpoint-{max_steps}'),
                             os.path.join(curr_save_dir, f'checkpoint-last'))
             else:
-                # single
                 if cfg.save_checkpoint:
                     shutil.copytree(os.path.join(curr_save_dir, f'checkpoint-{max_steps}'),
                                     os.path.join(curr_save_dir, f'checkpoint-last'))
 
         if os.path.exists(last_checkpoint_dir) and not cfg.save_checkpoint:
-            # for evaluate last task
-            # For continual unlearning, remove the last model checkpoint
             if os.path.exists(os.path.join(cfg.save_dir, f"unlearn_times_{unlearn_times - 1}", "eval_results-last")):
                 shutil.rmtree(last_checkpoint_dir)
                 print('Removed %s' % last_checkpoint_dir)

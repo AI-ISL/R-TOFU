@@ -1,5 +1,4 @@
 llama2-7b:
-  # follow tofu
   hf_key: "NousResearch/Llama-2-7b-chat-hf"
   question_start_tag: "[INST] "
   question_end_tag: " [/INST]"

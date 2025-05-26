@@ -27,11 +27,9 @@ def token_entropy(tokenizer, gen_texts, normalize=True):
 
 
 def compute_token_entropy(tokenizer, sentence, normalize=True):
-    # get n-gram dist
     tokens = tokenizer.tokenize(sentence)
     ngrams = nltk.ngrams(tokens, 1)
     fdist = nltk.FreqDist(ngrams)
-    # get n-gram freq
     freqs = np.array([freq for _, freq in fdist.items()])
     freqs = freqs / freqs.sum()
 
@@ -39,10 +37,9 @@ def compute_token_entropy(tokenizer, sentence, normalize=True):
 
     num_ngrams = len(tokens)
     if num_ngrams <= 1:
-        return 0  # If there are not enough n-grams, entropy is 0
+        return 0  
     max_entropy = np.log2(num_ngrams)
 
-    # Normalize entropy
     normalized_entropy = entropy / max_entropy
 
     return normalized_entropy if normalize else entropy
@@ -73,51 +70,12 @@ def eval_perturbation_ratio(eval_dataloader, perturb_dataloader, model, tokenize
             perturb_outputs = model(**perturb_batch)
 
 
-        ############################################################
-        ##ouputs.logits:[bs, seq_len, vocab_size]의 형태, batch['labels']:[bs, seq_len]의 형태
         masked_labels = mask_non_answer_labels(batch['labels'], tokenizer)
         gt_loss = get_batch_loss(outputs.logits, masked_labels)
         perturb_masked_labels = mask_non_answer_labels(batch['labels'], tokenizer)
         if perturb_masked_labels.shape[0] != perturb_outputs.logits.shape[0]:
             perturb_masked_labels = perturb_masked_labels.expand(perturb_outputs.logits.shape[0], -1)
-            # perturb_masked_labels = perturb_masked_labels.repeat(perturb_outputs.logits.shape[0] // perturb_masked_labels.shape[0], 1)
         perturb_loss = get_batch_loss(perturb_outputs.logits, perturb_masked_labels).view(bsz, seq_len)
-        # print(f"\n[디버깅] logits.shape[0]: {perturb_outputs.logits.shape[0]}")
-        # print(f"[디버깅] original labels.shape[0]: {perturb_masked_labels.shape[0]}")
-        # print(f"[디버깅] label repeat factor: {perturb_outputs.logits.shape[0] // perturb_masked_labels.shape[0]}")
-
-        # # before repeat: print labels for inspection
-        # print("[디버깅] perturb_masked_labels before repeat:")
-        # print(perturb_masked_labels)
-
-        # for i in range(min(5, bsz)):
-        #     input = tokenizer.decode(perturb_batch["input_ids"][i], skip_special_tokens=True)
-        #     label = tokenizer.decode(perturb_masked_labels[i][perturb_masked_labels[i] != -100], skip_special_tokens=True)
-        #     origin = tokenizer.decode(batch["input_ids"][i % bsz], skip_special_tokens=True)
-
-        #     print(f"\n📍 Sample {i}")
-        #     print(f"🔹 Perturbed Input:\n{input}")
-        #     print(f"🔸 Label:\n{label}")
-        #     print(f"🔹 Original Input:\n{origin}")
-
-        # # apply repeat
-        # perturb_masked_labels = perturb_masked_labels.repeat(
-        #     perturb_outputs.logits.shape[0] // perturb_masked_labels.shape[0], 1
-        # )
-
-        # # after repeat
-        # print(f"[디버깅] repeated labels.shape: {perturb_masked_labels.shape}")
-        # print("[디버깅] perturb_masked_labels after repeat (first few rows):")
-        # print(perturb_masked_labels[:min(perturb_outputs.logits.shape[0], 5)])  # 앞부분만 보기
-
-        # # loss 계산
-        # perturb_loss = get_batch_loss(perturb_outputs.logits, perturb_masked_labels).view(bsz, seq_len)
-
-        ############################################################
-
-
-        # gt_loss = get_batch_loss(outputs.logits, batch['labels'])
-        # perturb_loss = get_batch_loss(perturb_outputs.logits, perturb_batch['labels']).view(bsz, seq_len)
 
         num_token_gt = (batch['labels'] != -100).sum(-1)
         num_token_perturb = (perturb_batch['labels'] != -100).view(bsz, seq_len, -1).sum(-1)
@@ -188,46 +146,32 @@ def get_dataloader(cfg, eval_task, tokenizer, folder, split, question_key, answe
     return eval_dataloader, base_eval_dataloader, perturb_dataloader
 
 def mask_non_answer_labels(labels, tokenizer):
-    """
-    <think> ~ </think>을 포함한 모든 부분을 -100으로 마스킹하고,
-    </think>\n\n 이후의 정답 부분만 남기는 함수.
-    """
     end_think_token = "</think>\n\n"
-    end_think_token_ids = tokenizer.encode(end_think_token, add_special_tokens=False)  # </think>\n\n의 토큰 ID 시퀀스
+    end_think_token_ids = tokenizer.encode(end_think_token, add_special_tokens=False)  
 
-    masked_labels = labels.clone()  # 원본 labels 복사
+    masked_labels = labels.clone()  
     
-    for i in range(labels.shape[0]):  # 배치별 처리
-        label_tokens = labels[i].tolist()  # 리스트 형태로 변환
+    for i in range(labels.shape[0]): 
+        label_tokens = labels[i].tolist()  
         
-        # `</think>\n\n`의 첫 번째 토큰 ID의 위치 찾기
         for idx in range(len(label_tokens) - len(end_think_token_ids) + 1):
             if label_tokens[idx:idx + len(end_think_token_ids)] == end_think_token_ids:
-                answer_start_idx = idx + len(end_think_token_ids)  # </think>\n\n 이후가 정답 부분
+                answer_start_idx = idx + len(end_think_token_ids)  
                 break
         else:
-            answer_start_idx = len(label_tokens)  # 만약 </think>\n\n이 없다면 전체를 마스킹하지 않음
+            answer_start_idx = len(label_tokens) 
         
-        # </think>\n\n 이전 부분을 -100으로 마스킹
         masked_labels[i, :answer_start_idx] = -100
 
     return masked_labels
 
 def debug_masked_labels(labels, masked_labels, tokenizer):
-    """
-    마스킹된 labels에서 loss 계산에 포함되는 텍스트를 디코딩하여 출력하는 디버깅 함수.
-    """
-    for i in range(labels.shape[0]):  # 배치별로 확인
-        original_tokens = labels[i][labels[i] != -100]  # 원본 labels에서 -100이 아닌 값만 선택
-        masked_tokens = masked_labels[i][masked_labels[i] != -100]  # 마스킹된 labels에서 -100이 아닌 값만 선택
+    for i in range(labels.shape[0]): 
+        original_tokens = labels[i][labels[i] != -100]  
+        masked_tokens = masked_labels[i][masked_labels[i] != -100] 
 
         original_text = tokenizer.decode(original_tokens, skip_special_tokens=True)
         masked_text = tokenizer.decode(masked_tokens, skip_special_tokens=True)
-
-        # print(f"=== 샘플 {i} ===")
-        # print(f"[원본 텍스트 (labels)]\n{original_text}\n")
-        # print(f"[마스킹 후 Loss에 포함되는 텍스트 (masked_labels)]\n{masked_text}\n")
-        # print("=" * 50)
 
 
 def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataloader, base_eval_dataloader,
@@ -237,6 +181,7 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
     gen_outputs = []
     ground_truths = []
     input_strings = []
+    all_ground_truths = []
 
     for batch in tqdm(eval_dataloader):
         input_ids, labels, attention_mask = batch
@@ -248,30 +193,12 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
         with torch.no_grad():
             outputs = model(**batch)
             input_string, gen_output, gt = run_generation(cfg, batch, model, tokenizer=tokenizer)
-            
-            # decoded_ground_truths = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in gt]
-            # decoded_input_strings = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in input_string]
-            # decoded_gen_outputs = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in gen_output]
 
-            # 결과 출력
-            # print("Decoded Ground Truths:", decoded_ground_truths)
-            # print("Decoded Input Strings:", decoded_input_strings)
-            # print("Decoded Gen Outputs:", decoded_gen_outputs)
-
-
-            # ground_truths = [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gt]
-            # # input_strings = [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in input_string]
-            # input_strings = input_string
-            # gen_outputs = [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gen_output]
-
-            ground_truths += [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gt]
+            all_ground_truths += [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gt]
             input_strings += input_string
             gen_outputs += [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gen_output]
 
-            ########################################################################################################
-            ground_truths = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in ground_truths]
-            # input_strings = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in input_strings]
-            
+            # ground_truths = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in ground_truths]
 
             input_strings = [
                 re.sub(r"<｜User｜>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<｜Assistant｜>')[0].strip()
@@ -280,34 +207,26 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
 
             gen_outputs = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in gen_outputs]
 
-            # ## 결과 출력
-            # print("#########")
-            # print("Decoded Ground Truths:", ground_truths)
-            # print("Decoded Input Strings:", input_strings)
-            # print("Decoded Gen Outputs:", gen_outputs)
-
-        ############################################################
-        ##ouputs.logits:[bs, seq_len, vocab_size]의 형태, batch['labels']:[bs, seq_len]의 형태
         masked_labels = mask_non_answer_labels(batch['labels'], tokenizer)
         debug_masked_labels(labels, masked_labels, tokenizer)
-        # 기존 코드에서 labels를 masked_labels로 변경
         gt_loss = get_batch_loss(outputs.logits, masked_labels)
         num_token_gt = (masked_labels != -100).sum(-1)
-        ############################################################
 
 
         eval_logs['avg_gt_loss'] = eval_logs.get('avg_gt_loss', []) + (gt_loss / num_token_gt).to(torch.float32).cpu().numpy().tolist()
         eval_logs['gt_loss'] = eval_logs.get('gt_loss', []) + gt_loss.tolist()
         eval_logs['num_token_gt'] = eval_logs.get('num_token_gt', []) + num_token_gt.tolist()
-        # rouge_cores = eval_rouge_recall(gen_outputs, ground_truths)
 
+    ground_truths = [
+    tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)
+    for s in all_ground_truths
+    ]
     rouge_cores = eval_rouge_recall(gen_outputs, ground_truths)
     eval_logs.update(rouge_cores)
     eval_logs.update(eval_perturbation_ratio(base_eval_dataloader, perturb_dataloader, model, tokenizer))
 
     es_pipe = pipeline("text-classification", model="sileod/deberta-v3-base-tasksource-nli",
                        device=torch.device('cuda'))
-    # eval_real_author_wo_options, eval_real_world_wo
     if 'real_author' in eval_task:
         real_author_data = read_jsonline(os.path.join(folder, 'real_authors_perturbed.json'))
         real_author_org_answer = [i['original_answer'] for i in real_author_data]
@@ -324,7 +243,6 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
             get_entailment_results(es_pipe, gen_outputs, real_world_org_answer, eval_task, rouge_cores['rougeL_recall'],
                                    bs=5, tofu=tofu))
     else:
-        # for real world, use org answer ranth than golden answer for cos simlarity
         org_answer = [i['answer'] for i in read_jsonline(os.path.join(folder, split + '.json'))]
         eval_logs['generated_text'] = list(zip(input_strings, gen_outputs, ground_truths, org_answer))
         eval_logs.update(eval_cosine_similarity(gen_outputs, org_answer))
@@ -354,114 +272,42 @@ def get_eval_results(eval_result_dict):
     }
 
     eval_tasks = list(eval_task_dict.keys())
-    metrics = ['ROUGE', 'Probability', 'Truth Ratio', 'Token Entropy', 'Cosine Similarity', 'Entailment Score']
+    metrics = ['ROUGE','Token Entropy', 'Cosine Similarity', 'Entailment Score']
     output_result = {}
     for eval_task in eval_tasks:
         if eval_task in eval_result_dict.keys():
             for metric in metrics:
                 output_result[eval_task_dict[eval_task] + ' ' + metric] = []
 
-    # k is different files
     for k, v in eval_result_dict.items():
-        # getting Probability
-        if 'eval_log' in k:
-            gt_probs = np.exp(-1 * np.array(eval_result_dict[k]['avg_gt_loss']))
-            avg_gt_prob = np.mean(gt_probs)
-        else:
-            avg_true_prob = np.exp(-1 * np.array(eval_result_dict[k]['avg_gt_loss']))
-            avg_false_prob = np.exp(-1 * np.array(eval_result_dict[k]['average_perturb_loss']))
-            avg_all_prob = np.concatenate([np.expand_dims(avg_true_prob, axis=-1), avg_false_prob], axis=1).sum(-1)
-            avg_gt_prob = np.mean(avg_true_prob / avg_all_prob)
-        output_result[f'{eval_task_dict[k]} Probability'] = avg_gt_prob
 
-        # getting ROUGE
         avg_rouge = np.array(eval_result_dict[k]['rougeL_recall']).mean()
         output_result[f'{eval_task_dict[k]} ROUGE'] = avg_rouge
-
-        # getting Truth Ratio
-        avg_paraphrase_np_values = np.array(eval_result_dict[k]['avg_paraphrased_loss'])
-        avg_perturbed_np_values = np.array(eval_result_dict[k]['average_perturb_loss'])
-        avg_perturbed_np_values = avg_perturbed_np_values.mean(axis=-1)
-
-        curr_stat_1 = np.exp(avg_perturbed_np_values - avg_paraphrase_np_values)
-        # output_result[f'{eval_task_dict[k]} paraphrased_over_perturbed'] = curr_stat_1
-        if 'forget' in k:
-            paraphrased_perturb_ratio = 1 - np.mean(np.minimum(curr_stat_1, 1 / curr_stat_1))
-            # paraphrased_perturb_ratio = curr_stat_1
-        else:
-            paraphrased_perturb_ratio = np.mean(np.maximum(0, 1 - 1 / curr_stat_1))
-            # paraphrased_perturb_ratio = curr_stat_1
-
-        output_result[f'{eval_task_dict[k]} Truth Ratio'] = paraphrased_perturb_ratio
         output_result[f'{eval_task_dict[k]} Token Entropy'] = np.array(eval_result_dict[k]['token_entropy']).mean()
         output_result[f'{eval_task_dict[k]} Cosine Similarity'] = np.array(
             eval_result_dict[k]['cosine_similarity']).mean()
         output_result[f'{eval_task_dict[k]} Entailment Score'] = get_entailment_score(
             eval_result_dict[k]['entailment_labels'])
 
-    # from numbers import Number
-
-    # model_utility_retain_cands = []
-    # model_utility_cands = []
-    # forget_efficacy_cands = []
-
-    # for k, v in output_result.items():
-    #     # all six metrics
-    #     if 'Forget' not in k:
-    #         # model utility
-    #         if isinstance(v, np.ndarray):
-    #             v_flat = v.tolist()
-    #             model_utility_cands.extend([x for x in v_flat if isinstance(x, Number)])
-    #             if 'Retain' in k:
-    #                 model_utility_retain_cands.extend([x for x in v_flat if isinstance(x, Number)])
-    #         elif isinstance(v, Number):
-    #             model_utility_cands.append(v)
-    #             if 'Retain' in k:
-    #                 model_utility_retain_cands.append(v)
-    #     else:
-    #         # forget efficacy
-    #         if 'Entropy' not in k:
-    #             if isinstance(v, np.ndarray):
-    #                 forget_efficacy_cands.extend([x for x in v.tolist() if isinstance(x, Number)])
-    #             elif isinstance(v, Number):
-    #                 forget_efficacy_cands.append(v)
-
-    # # Debug print
-    # print("🟡 model_utility_retain_cands:", model_utility_retain_cands)
-    # print("🟡 types:", [type(x) for x in model_utility_retain_cands])
-
-    # # Safe hmean computation
-    # output_result['Model Utility Retain'] = hmean(model_utility_retain_cands)
-    # output_result['Model Utility'] = hmean(model_utility_cands)
-    # output_result['Forget Efficacy'] = 1.0 - np.mean(forget_efficacy_cands)
 
     model_utility_retain_cands = []
     model_utility_cands = []
     forget_efficacy_cands = []
     for k, v in output_result.items():
-        # all six metrics
         if 'Forget' not in k:
-            # model utlity
             model_utility_cands.append(v)
             if 'Retain' in k:
-                # only consider the metrics on retain/neighbor set
                 model_utility_retain_cands.append(v)
         else:
-            # forget_efficacy
-            if 'Entropy' not in k:  # exclude the token entropy
+            if 'Entropy' not in k: 
                 forget_efficacy_cands.append(v)
-    # print("🟡 model_utility_retain_cands:", model_utility_retain_cands)
-    # print("🟡 types:", [type(x) for x in model_utility_retain_cands])
-    output_result['Model Utility Retain'] = hmean(model_utility_retain_cands)
-    output_result['Model Utility'] = hmean(model_utility_cands)
-    # The larger the value, the worse the performance on Forget Set.
-    output_result['Forget Efficacy'] = 1.0 - np.mean(forget_efficacy_cands)
 
+    output_result['Model Utility'] = hmean(model_utility_cands)
+    output_result['Forget Efficacy'] = hmean([1.0 - x for x in forget_efficacy_cands])
     return output_result
 
 
 def run_generation(cfg, batch, model, tokenizer):
-    # generate outputs based on question
     input_ids = batch["input_ids"]
 
     input_strings = tokenizer.batch_decode(input_ids, skip_special_token=False)
@@ -469,12 +315,10 @@ def run_generation(cfg, batch, model, tokenizer):
 
 
     if cfg.model_family == 'llama3-8b':
-        # ground_truth = [s.split(split_symbol, 1)[1] if split_symbol in s else "" for s in input_strings]
-        ground_truth = [s.split(split_symbol, 1)[1] if split_symbol in s else "" for s in input_strings]  # `<think>\n` 이후 저장
-        input_strings = [s.split(split_symbol, 1)[0] + split_symbol for s in input_strings]  # `<think>\n` 전까지 포함
+        ground_truth = [s.split(split_symbol, 1)[1] if split_symbol in s else "" for s in input_strings]  
+        input_strings = [s.split(split_symbol, 1)[0] + split_symbol for s in input_strings]  
 
 
-    # now tokenize the strings with left padding
     left_pad_tokenizer = tokenizer
     left_pad_tokenizer.padding_side = 'left'
     left_pad_tokenizer.padding_size = 'longest'
@@ -484,7 +328,6 @@ def run_generation(cfg, batch, model, tokenizer):
     inputs = left_pad_tokenizer.batch_encode_plus(input_strings, add_special_tokens=True, return_tensors='pt',
                                                   padding=True).to(model.device)
 
-    # now generate
     torch.manual_seed(0)
     out = model.generate(inputs.input_ids,
                          attention_mask=inputs.attention_mask,
@@ -494,7 +337,6 @@ def run_generation(cfg, batch, model, tokenizer):
                          use_cache=True,
                          pad_token_id=left_pad_tokenizer.eos_token_id)
 
-    # outputs
     strs = left_pad_tokenizer.batch_decode(out[:, inputs.input_ids.shape[-1]:], skip_special_tokens=True)
     return input_strings, strs, ground_truth
 
@@ -523,79 +365,27 @@ def eval_cosine_similarity(gen_outputs, ground_truths):
 
     return {'cosine_similarity': scores}
 
-
-# def get_entailment_results(pipe, gen_outputs, ground_truths, eval_task, rouge_scores, bs=5, tofu=True):
-#     results = []
-#     for i in range(0, len(gen_outputs), bs):
-#         targets = ground_truths[i:i + bs]
-#         outputs = gen_outputs[i:i + bs]
-#         data_list = []
-#         # 能否从answer推断output
-#         for j in range(len(targets)):
-#             # For real world scenarios
-#             if not tofu:
-#                 if j<len(outputs):
-#                     # for foget set & retain set
-#                     data_list.append({
-#                         'text': outputs[j],
-#                         'text_pair': targets[j]
-
-#                     })
-#             # For TOFU
-#             else:
-#                 if j<len(outputs):
-#                     if 'forget' in eval_task:
-#                         # for foget set 
-#                         data_list.append({
-#                             'text': outputs[j],
-#                             'text_pair': targets[j]
-
-#                         })
-#                     else:
-#                         # for foget set & retain set & real author & real world
-#                         data_list.append({
-#                             'text': targets[j],
-#                             'text_pair': outputs[j]
-
-#                         })
-#         results.extend(pipe(data_list))
-
-#     entailment_labels = []
-#     for i, result in enumerate(results):
-#         # If ROUGE is less than 0.1, we consider the output is factually incorrect.
-#         if rouge_scores[i] < 0.1:
-#             label = 'none'
-#         else:
-#             label = result['label']
-#         entailment_labels.append(label)
-#     return {'entailment_labels': entailment_labels}
 def get_entailment_results(pipe, gen_outputs, ground_truths, eval_task, rouge_scores, bs=10, tofu=True):
     results = []
     for i in range(0, len(gen_outputs), bs):
         targets = ground_truths[i:i + bs]
         outputs = gen_outputs[i:i + bs]
         data_list = []
-        # 能否从answer推断output
         for i in range(len(targets)):
-            # For real world scenarios
             if not tofu:
-                # for foget set & retain set
                 data_list.append({
                     'text': outputs[i],
                     'text_pair': targets[i]
 
                 })
-            # For TOFU
             else:
                 if 'forget' in eval_task:
-                    # for foget set 
                     data_list.append({
                         'text': outputs[i],
                         'text_pair': targets[i]
 
                     })
                 else:
-                    # for foget set & retain set & real author & real world
                     data_list.append({
                         'text': targets[i],
                         'text_pair': outputs[i]
@@ -605,7 +395,6 @@ def get_entailment_results(pipe, gen_outputs, ground_truths, eval_task, rouge_sc
 
     entailment_labels = []
     for i, result in enumerate(results):
-        # If ROUGE is less than 0.1, we consider the output is factually incorrect.
         if rouge_scores[i] < 0.1:
             label = 'none'
         else:

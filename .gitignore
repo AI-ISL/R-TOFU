@@ -1,8 +1,0 @@
-results/
-!results/**/
-!**/unlearning_results.txt
-*.log
-*.ckpt
-__pycache__/
-flash-attention/
-outputs/

@@ -20,38 +20,24 @@ def dataset_to_json(dataset, filename, ):
             f.write('\n')
 
 
-# adopt from TOFU: https://github.com/locuslab/tofu/blob/80159d8ea39edf147fb09cd82aefa08e506e6718/data_module.py#L8
 def convert_raw_forget_data_to_model_format(tokenizer, max_length, question, cot, answer, model_configs, data_type="forget", mask=True):
     question_start_token, question_end_token, think_start_token, think_end_token, answer_token = model_configs[
         'question_start_tag'], model_configs['question_end_tag'], model_configs['think_start_tag'], model_configs['think_end_tag'], model_configs['answer_tag']
-    #############################################################################################
     if "forget_idk_short_short" in data_type:
         new_question = question_start_token + question + question_end_token + think_start_token
         new_answer = cot + think_end_token  + answer_token + answer
-    if "forget_idk_short_end" in data_type:
-        new_question = question_start_token + question + question_end_token + think_start_token
-        new_answer = cot + think_end_token
     elif "forget_idk_short" in data_type:
         new_question = question_start_token + question + question_end_token + think_start_token
         new_answer = cot
-    elif "forget_ans_5" in data_type:
-        new_question = question_start_token + question + question_end_token + think_start_token + cot 
-        new_answer = answer_token + answer
     elif "ans" in data_type:
-        #### Answer만 Loss에 포함#####
         new_question = question_start_token + question + question_end_token + think_start_token + cot + think_end_token
         new_answer = answer_token + answer
-    elif "forget_cot" in data_type: ###이거 없어야되나?..
+    elif "forget_cot" in data_type: 
         new_question = question_start_token + question + question_end_token + think_start_token
         new_answer = cot
-    elif "cot" in data_type:
-        #### cot만 Loss에 포함#####
-        new_question = question_start_token + question + question_end_token + think_start_token
-        new_answer = cot+ think_end_token 
     else: 
         new_question = question_start_token + question + question_end_token + think_start_token
         new_answer = cot + think_end_token + answer_token + answer
-    #############################################################################################
     full_text = new_question + new_answer
     num_question_tokens = len(tokenizer.tokenize(new_question, add_special_tokens=True))
 
@@ -70,7 +56,6 @@ def convert_raw_forget_data_to_model_format(tokenizer, max_length, question, cot
             label = encoded.input_ids
         else:
             label = encoded['input_ids'] + [tokenizer.eos_token_id] + [-100] * (pad_length - 1)
-        # change label to -100 for question tokens
         for i in range(num_question_tokens): label[i] = -100
     else:
         label = pad_input_ids
@@ -79,8 +64,7 @@ def convert_raw_forget_data_to_model_format(tokenizer, max_length, question, cot
 
 
 def convert_raw_data_to_model_format(tokenizer, max_length, question, answer, cot, model_configs):
-    # question_start_token, question_end_token, answer_token = model_configs['question_start_tag'], model_configs[
-    #     'question_end_tag'], model_configs['answer_tag']
+
     
     question_start_token, question_end_token, think_start_token, think_end_token, answer_token = model_configs[
         'question_start_tag'], model_configs['question_end_tag'], model_configs['think_start_tag'], model_configs['think_end_tag'], model_configs['answer_tag']
@@ -104,7 +88,6 @@ def convert_raw_data_to_model_format(tokenizer, max_length, question, answer, co
     else:
         label = encoded['input_ids'] + [tokenizer.eos_token_id] + [-100] * (pad_length - 1)
 
-    # change label to -100 for question tokens
     for i in range(num_question_tokens): label[i] = -100
 
     return torch.tensor(pad_input_ids), torch.tensor(label), torch.tensor(pad_attention_mask)
@@ -128,8 +111,7 @@ class TextForgetDatasetQA(Dataset):
         with open(self.idkcotfile, "r", encoding="utf-8") as f:
             self.idkcot = [json.loads(line.strip()) for line in f]
 
-        self.data_types = ["forget", "retain", "forget_idk", "retain_idk", "forget_ans", "retain_ans", "forget_cot", "retain_cot", "forget_idk_ans", "retain_idk_ans", "forget_idk_cot", "forget_cot_5", "forget_ans_5", "forget_idk_short", "forget_idk_short_end", "forget_idk_short_short"]
-
+        self.data_types = ["forget", "forget_ans", "forget_cot", "forget_idk_short_short", "forget_idk_ans", "forget_idk", "retain"]
 
     def __len__(self):
         return len(self.forget_data)
@@ -148,16 +130,6 @@ class TextForgetDatasetQA(Dataset):
                 question = data[retain_idx]['question']
                 cot = data[retain_idx]['cot']
                 answer = data[retain_idx]['answer']
-            # elif "forget_cot_5" in data_type:
-            #     data = self.forget_data
-            #     question = data[idx]['question']
-            #     cot = data[idx]['sentence_5']
-            #     answer = data[idx]['answer']
-            # elif "forget_ans_5" in data_type:
-            #     data = self.forget_data
-            #     question = data[idx]['question']
-            #     cot = data[idx]['reverse_5']
-            #     answer = data[idx]['reverse_5_answer']
             else:
                 data = self.forget_data
                 question = data[idx]['question']
@@ -167,17 +139,12 @@ class TextForgetDatasetQA(Dataset):
             if "forget_idk_short_short" in data_type:
                 cot = self.idk[rand_pos].strip()
                 answer = self.idk[rand_pos].strip()
-            elif "forget_idk_short" in data_type:
-                cot = self.idk[rand_pos].strip()
             elif "forget_idk_ans" in data_type:
                 answer = self.idk[rand_pos].strip()
             elif "forget_idk" in data_type:
                 cot = self.idkcot[idx]
                 answer = self.idk[rand_pos].strip()
-            elif "idk" in data_type:
-                answer = self.idk[rand_pos].strip()
-            elif "mismatch" in data_type:
-                answer = self.retain_data[retain_idx]['answer']
+            
             
             converted_data = convert_raw_forget_data_to_model_format(self.tokenizer, self.max_length, question, cot,
                                                                      answer, self.model_configs, data_type, mask=self.mask)
@@ -246,8 +213,7 @@ def custom_data_collator(samples):
 def custom_data_collator_forget(samples):
     rets = []
 
-    # Extracting samples for each data type
-    data_types = ["forget", "retain", "forget_idk", "retain_idk", "forget_ans", "retain_ans", "forget_cot", "retain_cot", "forget_idk_ans", "retain_idk_ans", "forget_idk_cot", "forget_cot_5", "forget_ans_5", "forget_idk_short", "forget_idk_short_end", "forget_idk_short_short"]
+    data_types = ["forget", "forget_ans", "forget_cot", "forget_idk_short_short", "forget_idk_ans", "forget_idk", "retain"]
     samples_dict = {data_type: [sample[i] for sample in samples] for i, data_type in enumerate(data_types)}
 
     for data_type in data_types:
@@ -267,7 +233,6 @@ def get_batch_loss(output, labels):
     output = output[..., :-1, :].contiguous()
 
     loss_function = nn.CrossEntropyLoss(ignore_index=-100, reduction='none')
-    # get the sum loss for each sequence in a batch
     loss = loss_function(output.transpose(-1, -2), shifted_labels).sum(dim=-1)
 
     return loss

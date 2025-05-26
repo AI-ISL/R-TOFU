@@ -15,3 +15,4 @@ scipy
 sentence_transformers
 tqdm
 bitsandbytes
+openai

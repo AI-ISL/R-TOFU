@@ -1,8 +1,0 @@
-results/steps/llama3-8b/forget01/SDK+GD3/seed_1001/epoch1_1e-05_FixRef_maskTrue_1.0_1.0/1/unlearn_times_1/checkpoint-last does not exist.
-results/steps/llama3-8b/forget01/SDK+GD3/seed_1001/epoch2_1e-05_FixRef_maskTrue_1.0_1.0/1/unlearn_times_1/checkpoint-last does not exist.
-data/tofu
-retain_perturbed
-data/tofu
-retain_perturbed
-data/tofu
-retain_perturbed
