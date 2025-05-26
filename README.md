@@ -2,6 +2,13 @@
 This repository is the official implementation for the paper: **R-TOFU: Unlearning in Large Reasoning Models.**
 
 
+<p align="center">
+  <a href="https://ai-isl.github.io/r-tofu"> 🏠 Homepage</a> |
+  <a href="https://arxiv.org/abs/2505.15214"> 📜 Paper</a> | 
+  <a href="https://huggingface.co/AI-ISL"> 🤗 Dataset</a>
+</p>
+
+
 ## Installation
 
 ```shell
