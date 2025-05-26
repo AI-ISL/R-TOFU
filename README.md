@@ -1,6 +1,6 @@
 # R-TOFU: Unlearning in Large Reasoning Models
+This repository is the official implementation for the paper: **R-TOFU: Unlearning in Large Reasoning Models.**
 
-Implementation for R-TOFU: Unlearning in Large Reasoning Models.
 
 ## Installation
 
