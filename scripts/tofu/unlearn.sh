@@ -2,7 +2,6 @@
 MASTER_PORT=$((RANDOM % 50001 + 10000))
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
-###### GA: Gradient Ascent; GA+GD:Gradient Difference; GA+KL:KL Minimization; IDK/SDK+GD: Preference Optimizatio
 forget_losses=(
 ################ GA
     GA1             ##CoT+Answer
