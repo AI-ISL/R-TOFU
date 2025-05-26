@@ -42,10 +42,7 @@ def compute_cosine_similarity_score(cfg, unlearn_times):
             lines = f.readlines()
 
         all_avg_list_cosine = []
-
-
         all_avg_list_rougeL_recall = []
-
 
         with open(output_path, "w", encoding="utf-8") as out_f:
             import nltk
@@ -55,8 +52,6 @@ def compute_cosine_similarity_score(cfg, unlearn_times):
                 data = json.loads(line)
                 if "average_rougeL_recall" in data:
                     continue    
-                if "average_rougeL_f1_cot" in data:
-                    continue
                 if "average_rougeL" in data:
                     continue
 

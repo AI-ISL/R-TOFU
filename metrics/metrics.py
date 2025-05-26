@@ -165,14 +165,6 @@ def mask_non_answer_labels(labels, tokenizer):
 
     return masked_labels
 
-def debug_masked_labels(labels, masked_labels, tokenizer):
-    for i in range(labels.shape[0]): 
-        original_tokens = labels[i][labels[i] != -100]  
-        masked_tokens = masked_labels[i][masked_labels[i] != -100] 
-
-        original_text = tokenizer.decode(original_tokens, skip_special_tokens=True)
-        masked_text = tokenizer.decode(masked_tokens, skip_special_tokens=True)
-
 
 def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataloader, base_eval_dataloader,
                   perturb_dataloader, tofu):
@@ -198,8 +190,6 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
             input_strings += input_string
             gen_outputs += [s.split("</think>\n\n", 1)[1] if "</think>\n\n" in s else "" for s in gen_output]
 
-            # ground_truths = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in ground_truths]
-
             input_strings = [
                 re.sub(r"<｜User｜>\s*", "", tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True)).split('<｜Assistant｜>')[0].strip()
                 for s in input_strings
@@ -208,7 +198,6 @@ def get_all_evals(cfg, model, tokenizer, folder, split, eval_task, eval_dataload
             gen_outputs = [tokenizer.decode(tokenizer.encode(s), skip_special_tokens=True) for s in gen_outputs]
 
         masked_labels = mask_non_answer_labels(batch['labels'], tokenizer)
-        debug_masked_labels(labels, masked_labels, tokenizer)
         gt_loss = get_batch_loss(outputs.logits, masked_labels)
         num_token_gt = (masked_labels != -100).sum(-1)
 
