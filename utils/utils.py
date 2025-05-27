@@ -18,7 +18,7 @@ def get_model_identifiers_from_yaml(model_family):
             start_of_sequence_token: "<s>"
     '''
     model_configs = {}
-    with open("config/model_config.yaml", "r") as f:
+    with open("config/model_config.yaml", "r", encoding="utf-8) as f:
         model_configs = yaml.load(f, Loader=yaml.FullLoader)
     return model_configs[model_family]
 
