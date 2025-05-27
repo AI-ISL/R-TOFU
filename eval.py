@@ -151,8 +151,7 @@ def main(cfg):
 
     eval_results = model_eval(cfg, cfg.task_id, unlearn_times, model, tokenizer, curr_eval_dir, curr_data_path,
                               cfg.eval_unlearn_step)
-    print('After Unlearn Task %d, Unlearn Step %s,  Model Uility %.6f, Forget Efficacy %.6f' %
-          (cfg.task_id, cfg.eval_unlearn_step, eval_results['Model Utility'], eval_results['Forget Efficacy']))
+
 
 
 if __name__ == "__main__":
